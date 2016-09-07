@@ -2,7 +2,7 @@
 
 Psst is a template-based file generator written in PowerShell.  Its purpose is to quickly 
 create files from templates for any development language.  Generated files are created 
-using predefined templates with replacement parameters.
+using predefined templates that use PowerShell's string replacement/interpolation syntax.
 
 ## Maintainers
 

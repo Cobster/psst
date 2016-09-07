@@ -22,7 +22,7 @@ function Expand-Template
             # Remove the leading dash
             $__arg = $__arg.Substring(1)
             # Get the next argument which is the value for __arg
-            $__argv = [string]($MyInvocation.UnboundArguments[$__i+1])
+            $__argv = $MyInvocation.UnboundArguments[$__i+1]
             # Create a new local variable
             New-Variable -Name $__arg -Value $__argv
             # Increment loop counter past the arg value 
