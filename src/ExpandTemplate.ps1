@@ -1,3 +1,19 @@
+<#
+
+.SYNOPSIS
+
+Expands a template string with dynamically defined arguments.
+
+.DESCRIPTION
+
+The Expand-Template function uses PowerShell's built in string expansion functionality to populate the values of a 
+parameterized string.
+
+.PARAMETER Template
+
+The template that will be expanded.  This must be string literal so PowerShell does not preemptively expand the string. 
+
+#>
 function Expand-Template
 {
     # IMPORTANT!
