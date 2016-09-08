@@ -22,8 +22,14 @@ function Expand-Template
     # throws exceptions because the unbound arguments exist.
 
     param (
-        [string] $Template
+        [string] $Template,
+        [string] $Path,
+        [string] $OutFile
     )
+
+    if ([string]::IsNullOrEmpty($Template)) {
+        $Template = Get-Content -Path $Path -Raw
+    }
 
     # IMPORTANT! 
     # All variables except $Template are purposefully prefixed with double underscores
@@ -47,5 +53,11 @@ function Expand-Template
     }
 
     # Expand the variables in the template and return it to the caller.
-    $ExecutionContext.InvokeCommand.ExpandString($Template)
+    $Artifact = $ExecutionContext.InvokeCommand.ExpandString($Template)
+
+    if (-not [string]::IsNullOrEmpty($OutFile)) {
+        $Artifact | Out-File -FilePath $OutFile -NoNewline
+    }
+
+    $Artifact
 }

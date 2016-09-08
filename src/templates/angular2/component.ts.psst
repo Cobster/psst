@@ -1,7 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 $ComponentDecorator
-export class $($Name)Component {
+export class $($Name)Component implements OnInit {
+
+    constructor() { }
+
+    ngOnInit {
+
+    }
 
 }
-
