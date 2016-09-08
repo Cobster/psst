@@ -33,7 +33,7 @@ function New-AngularComponent {
     $TypescriptExtension = "ts"
     $TestExtension = "spec.ts"
     $HtmlExtension = "html"
-    $TemplateDir = "$PSScriptRoot\templates\angular2"
+    $TemplateDir = "$PSScriptRoot\templates\angular2\component"
     
     $ComponentMetadata = @()
 
