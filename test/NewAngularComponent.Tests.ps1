@@ -81,10 +81,18 @@ Describe "New-AngularComponent" {
         ".\item-list.component.ts" | Should Contain "styles\: \[require\('\./item\-list\.component\.less'\)\]"
     }
 
-    It "Should not define a selector when -NoSelector is specified" {
-        New-AngularComponent -Name ItemList -Prefix "x" -NoSelector
-        ".\item-list.component.ts" | Should Not Contain "selector\: 'x-item-list'"
+    # It "Should not define a selector when -NoSelector is specified" {
+    #     New-AngularComponent -Name ItemList -Prefix "x" -NoSelector
+    #     ".\item-list.component.ts" | Should Not Contain "selector\: 'x-item-list'"
+    # }
+
+    It "Should set the 'selector' metadata to the specified -Selector value" {
+        New-AngularComponent -Name ItemList -Selector 'x-item-list'
+        ".\item-list.component.ts" | Should Contain "selector\: 'x-item-list'"
     }
 
-    
+    It "Should not define 'selector' metadata when -Selector is not specified" {
+        New-AngularComponent -Name ItemList
+        ".\item-list.component.ts" | Should Not Contain "selector\: '[\w\-]*'"
+    }
 }
