@@ -57,8 +57,13 @@ function New-AngularComponent {
         -OutFile "$pwd\$($__Name.KebabCase).component.ts" `
         -Name $__Name `
         -ComponentDecorator $ComponentDecorator
+
           
     Expand-Template -Path "$PSScriptRoot\templates\angular2\component.html.psst" `
         -OutFile "$pwd\$($__Name.KebabCase).component.html" `
-        -Name $__Name 
+        -Name $__Name
+
+    Expand-Template -Path "$PSScriptRoot\templates\angular2\component.spec.psst" `
+        -OutFile "$pwd\$($__Name.KebabCase).component.spec.ts" `
+        -Name $__Name
 }

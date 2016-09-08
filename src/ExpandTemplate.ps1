@@ -58,6 +58,7 @@ function Expand-Template
     if (-not [string]::IsNullOrEmpty($OutFile)) {
         $Artifact | Out-File -FilePath $OutFile -NoNewline
     }
-
-    $Artifact
+    else {
+        $Artifact
+    }
 }

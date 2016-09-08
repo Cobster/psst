@@ -30,6 +30,12 @@ Describe "New-AngularComponent" {
         ".\item-list.component.html" | Should Exist
     }
 
+    It "Should create a new test file for the component" {
+        New-AngularComponent -Name ItemList
+        ".\item-list.component.spec.ts" | Should Exist
+    }
+
+
     It "Should create a css file for the component when css is specified" {
         New-AngularComponent -Name ItemList -Styles Css
         ".\item-list.component.css" | Should Exist
@@ -79,4 +85,6 @@ Describe "New-AngularComponent" {
         New-AngularComponent -Name ItemList -Prefix "x" -NoSelector
         ".\item-list.component.ts" | Should Not Contain "selector\: 'x-item-list'"
     }
+
+    
 }
