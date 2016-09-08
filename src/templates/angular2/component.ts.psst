@@ -1,9 +1,7 @@
-import { Component } from "@angular/core"
+import { Component } from '@angular/core';
 
-@Component({
-	selector: '$Prefix-$($Name.KebabCase)',
-	template: require('./$($Name.KebabCase).component.html')
-})
+$ComponentDecorator
 export class $($Name)Component {
 
 }
+
