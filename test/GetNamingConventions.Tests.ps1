@@ -6,6 +6,10 @@ $sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path) -replace '\.Tests\.', '.'
 
 Describe "Get-NamingConventions" {
 
+    It "Should default to the name" {
+        (Get-NamingConventions -Name "ItemList").ToString() | Should Be "ItemList"
+    }
+
     It "Should return the lowercase name" {
         (Get-NamingConventions -Name "ItemList").Lowercase | Should Be "itemlist"
     }
@@ -34,11 +38,13 @@ Describe "Get-NamingConventions" {
         (Get-NamingConventions -Name "Goose" -Plural "Geese").Plural.Name | Should Be "Geese"
     }
 
+    It "Should using upper camel case for ToString" {
+        (Get-NamingConventions -Name "ItemList").Plural.ToString() | Should Be "ItemLists"
+    }
+
     It "Should return the plural lowercase name" {
         (Get-NamingConventions -Name "ItemList").Plural.Lowercase | Should Be "itemlists"
     }
-
-    
 
     It "Should return the plural uppercase name" {
         (Get-NamingConventions -Name "ItemList").Plural.Lowercase | Should Be "itemlists"

@@ -12,30 +12,14 @@
 .EXAMPLE
     PS C:\> Get-NamingConventions -Name ItemList
 
-    Name                           Value
-    ----                           -----
-    Name                           ItemList
-    Plural                         {Name, UpperCamelCase, Uppercase, LowerCamelCase...}
-    UpperCamelCase                 ItemList
-    Uppercase                      ITEMLIST
-    LowerCamelCase                 itemList
-    KebabCase                      item-list
-    Lowercase                      itemlist
-
-.EXAMPLE
-    Get the plural names
-
-    PS C:\> $nc = Get-NamingConventions -Name ItemList
-    PS C:\> $nc.Plural 
-
-    Name                           Value
-    ----                           -----
-    Name                           ItemLists
-    UpperCamelCase                 ItemLists
-    Uppercase                      ITEMLISTS
-    LowerCamelCase                 itemLists
-    KebabCase                      item-lists
-    Lowercase                      itemlists
+    Name           : ItemList
+    Lowercase      : itemlist
+    Uppercase      : ITEMLIST
+    UpperCamelCase : ItemList
+    LowerCamelCase : itemList
+    KebabCase      : item-list
+    Plural         : @{Name=ItemLists; Lowercase=itemlists; Uppercase=ITEMLISTS; UpperCamelCase=ItemLists;
+                    LowerCamelCase=itemLists; KebabCase=item-lists}
 
 #>
 
@@ -48,22 +32,23 @@ function Get-NamingConventions
         [string] $PluralName = "$($Name)s"
     )
 
-    $Names = @{
-        Name = $Name
-        Lowercase = $Name.ToLower()
-        Uppercase = $Name.ToUpper()
-        UpperCamelCase = $Name
-        LowerCamelCase = ([Char]::ToLower($Name[0]) + $Name.Substring(1))
-        KebabCase = (ConvertTo-KebabCase -Name $Name)
-        Plural = @{
-            Name = $PluralName
-            Lowercase = $PluralName.ToLower()
-            Uppercase = $PluralName.ToUpper()
-            UpperCamelCase = $PluralName
-            LowerCamelCase = ([Char]::ToLower($PluralName[0]) + $PluralName.Substring(1))
-            KebabCase = (ConvertTo-KebabCase -Name $PluralName)
-        }
-    }
+    $Obj = New-Object PSObject
+    $Obj | Add-Member -MemberType NoteProperty -Name "Name" -Value $Name
+    $Obj | Add-Member -MemberType NoteProperty -Name "Lowercase" -Value $Name.ToLower()
+    $Obj | Add-Member -MemberType NoteProperty -Name "Uppercase" -Value $Name.ToUpper()
+    $Obj | Add-Member -MemberType NoteProperty -Name "UpperCamelCase" -Value $Name
+    $Obj | Add-Member -MemberType NoteProperty -Name "LowerCamelCase" -Value ([Char]::ToLower($Name[0]) + $Name.Substring(1))
+    $Obj | Add-Member -MemberType NoteProperty -Name "KebabCase" -Value (ConvertTo-KebabCase -Name $Name)
+    $Obj | Add-Member -MemberType NoteProperty -Name "Plural" -Value (New-Object PSObject)
+    $Obj.Plural | Add-Member -MemberType NoteProperty -Name "Name" -Value $PluralName
+    $Obj.Plural | Add-Member -MemberType NoteProperty -Name "Lowercase" -Value $PluralName.ToLower()
+    $Obj.Plural | Add-Member -MemberType NoteProperty -Name "Uppercase" -Value $PluralName.ToUpper()
+    $Obj.Plural | Add-Member -MemberType NoteProperty -Name "UpperCamelCase" -Value $PluralName
+    $Obj.Plural | Add-Member -MemberType NoteProperty -Name "LowerCamelCase" -Value ([Char]::ToLower($PluralName[0]) + $PluralName.Substring(1))
+    $Obj.Plural | Add-Member -MemberType NoteProperty -Name "KebabCase" -Value (ConvertTo-KebabCase -Name $PluralName)
 
-    $Names
+    $Obj | Add-Member -MemberType ScriptMethod -Name "ToString" { $this.Name } -Force
+    $Obj.Plural | Add-Member -MemberType ScriptMethod -Name "ToString" { $this.Name } -Force
+
+    $Obj
 }
