@@ -1,0 +1,12 @@
+import { ModuleWithProviders } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+
+const $($Name.Lowercase)Routes: Routes = [
+    // { path: '', component: $($Name)Component }
+];
+
+export const $($Name)RoutingProviders: any[] = [
+
+];
+
+export const $($Name)Routing: ModuleWithProviders = RouterModule.forChild($($Name.Lowercase)Routes);
