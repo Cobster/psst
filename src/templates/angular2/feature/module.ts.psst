@@ -1,11 +1,4 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+$([String]::Join("`r`n", $Imports))
 
-@NgModule({
-    declarations: [],
-    exports: [],
-    imports: [
-        CommonModule
-    ]
-})
+@NgModule({`r`n`t$([String]::Join(",`r`n`t", $ModuleMetadata))`r`n})
 export class $($Name)Module { }

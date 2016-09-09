@@ -18,12 +18,12 @@ Describe "Expand-Template" {
     }
 
     It "Should write result to file when -OutputFile is specified" {
-        Expand-Template '$Greeting $Target' -Greeting Hello -Target World -OutFile "TestDrive:\Result"
+        Expand-Template '$Greeting $Target' -Greeting Hello -Target World -OutputFile "TestDrive:\Result"
         Get-Content "TestDrive:\Result" | Should Be "Hello World"
     }
 
-    It "Should use template file when -Path is specified" {
+    It "Should use template file when -InputFile is specified" {
         '$Greeting $Target' | Out-File "TestDrive:\Template" -NoNewline
-        Expand-Template -Path "TestDrive:\Template" -Greeting "Gracias" -Target "Amigo" | Should Be "Gracias Amigo"
+        Expand-Template -InputFile "TestDrive:\Template" -Greeting "Gracias" -Target "Amigo" | Should Be "Gracias Amigo"
     }
 }

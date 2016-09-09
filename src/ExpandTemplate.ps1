@@ -23,12 +23,12 @@ function Expand-Template
 
     param (
         [string] $Template,
-        [string] $Path,
-        [string] $OutFile
+        [string] $InputFile,
+        [string] $OutputFile
     )
 
     if ([string]::IsNullOrEmpty($Template)) {
-        $Template = Get-Content -Path $Path -Raw
+        $Template = Get-Content -Path $InputFile -Raw
     }
 
     # IMPORTANT! 
@@ -55,8 +55,8 @@ function Expand-Template
     # Expand the variables in the template and return it to the caller.
     $Artifact = $ExecutionContext.InvokeCommand.ExpandString($Template)
 
-    if (-not [string]::IsNullOrEmpty($OutFile)) {
-        $Artifact | Out-File -FilePath $OutFile -NoNewline
+    if (-not [string]::IsNullOrEmpty($OutputFile)) {
+        $Artifact | Out-File -FilePath $OutputFile -NoNewline
     }
     else {
         $Artifact

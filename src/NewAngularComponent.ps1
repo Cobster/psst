@@ -39,12 +39,12 @@ function New-AngularComponent {
 
     # Add the 'selector' to the component decorator metadata
     if (-not ([String]::IsNullOrWhitespace($Selector))) {
-        $ComponentMetadata += Expand-Template -Path "$TemplateDir\component.metadata.selector.psst" `
+        $ComponentMetadata += Expand-Template -InputFile "$TemplateDir\component.metadata.selector.psst" `
             -Selector $Selector -Name $__Name -Stereotype $Stereotype -Extension $TypescriptExtension
     }
 
     # Add the 'template' component decorator metadata
-    $ComponentMetadata += Expand-Template -Path "$TemplateDir\component.metadata.template.psst" `
+    $ComponentMetadata += Expand-Template -InputFile "$TemplateDir\component.metadata.template.psst" `
         -Name $__Name -Stereotype $Stereotype -Extension $TypescriptExtension
     
     # Add a style file and 'styles' to the component decorator metadata
@@ -55,26 +55,26 @@ function New-AngularComponent {
             $StylesExtension = 'scss'
         }
 
-        $ComponentMetadata += Expand-Template -Path "$TemplateDir\component.metadata.styles.psst" `
+        $ComponentMetadata += Expand-Template -InputFile "$TemplateDir\component.metadata.styles.psst" `
             -Name $__Name -Extension $StylesExtension -Sterotype $Stereotype
 
-        Expand-Template -Path "$TemplateDir\component.styles.psst" `
-            -OutFile "$pwd\$($__Name.KebabCase).$Stereotype.$StylesExtension"
+        Expand-Template -InputFile "$TemplateDir\component.styles.psst" `
+            -OutputFile "$pwd\$($__Name.KebabCase).$Stereotype.$StylesExtension"
              
     }
 
-    $ComponentDecorator = Expand-Template -Path "$TemplateDir\component.decorator.psst" -ComponentMetadata $ComponentMetadata
+    $ComponentDecorator = Expand-Template -InputFile "$TemplateDir\component.decorator.psst" -ComponentMetadata $ComponentMetadata
     
-    Expand-Template -Path "$TemplateDir\component.ts.psst" `
-        -OutFile "$pwd\$($__Name.KebabCase).$Stereotype.$TypescriptExtension" `
+    Expand-Template -InputFile "$TemplateDir\component.ts.psst" `
+        -OutputFile "$pwd\$($__Name.KebabCase).$Stereotype.$TypescriptExtension" `
         -Name $__Name `
         -ComponentDecorator $ComponentDecorator
           
-    Expand-Template -Path "$TemplateDir\component.html.psst" `
-        -OutFile "$pwd\$($__Name.KebabCase).$Stereotype.$HtmlExtension" `
+    Expand-Template -InputFile "$TemplateDir\component.html.psst" `
+        -OutputFile "$pwd\$($__Name.KebabCase).$Stereotype.$HtmlExtension" `
         -Name $__Name
 
-    Expand-Template -Path "$TemplateDir\component.spec.psst" `
-        -OutFile "$pwd\$($__Name.KebabCase).$Stereotype.$TestExtension" `
+    Expand-Template -InputFile "$TemplateDir\component.spec.psst" `
+        -OutputFile "$pwd\$($__Name.KebabCase).$Stereotype.$TestExtension" `
         -Name $__Name
 }

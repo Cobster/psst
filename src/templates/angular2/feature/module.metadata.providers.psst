@@ -1,0 +1,1 @@
+providers: [`r`n`t`t$([String]::Join(",`r`n`t`t", $Providers))`r`n`t]

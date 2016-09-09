@@ -1,0 +1,1 @@
+declarations: [`r`n`t`t$([String]::Join(",`r`n`t`t", $Declarations))`r`n`t]
