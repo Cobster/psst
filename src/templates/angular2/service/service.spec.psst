@@ -1,0 +1,16 @@
+import { TestBed, async, inject } from '@angular/core/testing';
+import { $($Name)Service } from './$($Name.KebabCase).service';
+
+describe('Service: $($Name)Service', () => {
+
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            providers: [$($Name)Service]
+        });
+    });
+
+    it('should ...', inject([$($Name)Service], (service: $($Name)Service) => {
+        expect(service).toBeTruthy();
+    }));
+
+});

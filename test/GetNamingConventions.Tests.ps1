@@ -61,4 +61,8 @@ Describe "Get-NamingConventions" {
     It "Should return the plural kebab case name" {
         (Get-NamingConventions -Name "ItemList").Plural.KebabCase | Should Be "item-lists"
     }
+
+    It "Should capitalize the first letter if it is lowercase" {
+        (Get-NamingConventions -Name "itemList").Name | Should Be "ItemList"
+    }
 }

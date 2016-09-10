@@ -4,5 +4,6 @@
 
 . $PSScriptRoot\NewAngularComponent.ps1
 . $PSScriptRoot\NewAngularFeature.ps1
+. $PSScriptRoot\NewAngularService.ps1
 
 Export-ModuleMember -Function *-*
