@@ -3,26 +3,26 @@
 .SYNOPSIS
     Creates a set of artifacts that comprise an Angular2 component.
 
+.DESCRIPTION
+    This function will scaffold an Angular 2 component.  It creates a typescript file for the component code, 
+    an html file for the component template, an optional style file which can be css, sass, or less. This also
+    creates a typescript file for a testing the component with jasmine. 
+
 .PARAMETER Name
     The name of the angular component that will be created.
 
 .PARAMETER Selector
-    The selector to use for the component.
+    The selector to use for the component.  
 
 .PARAMETER Styles
     The type of styling file to create. Specified as 'css', 'sass', or 'less'.
     
-.PARAMETER NoSelector
-    Use this switch when you do not want a component to be declaratively added to the template
-    of another component. This is common for components that should only be accessible via a route.
-
 #>
 function New-AngularComponent {
 
     param (
         [Parameter(Mandatory = $true)]
         [string] $Name,
-        [string] $Prefix,
         [string] $Selector,
         [string] $Styles
     )
