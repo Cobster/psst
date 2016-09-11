@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
+$([String]::Join("`r`n", $Model.Imports))
 
 @Injectable()
-export class $($Name)Service {
+export class $($Model.Name)Service {
 
-    constructor() {
+    constructor($([String]::Join(", ", $Model.Constructor.Arguments))) {
 
     }
 

@@ -1,1 +1,0 @@
-exports: [`r`n`t`t$([String]::Join(",`r`n`t`t", $Exports))`r`n`t]

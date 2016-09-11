@@ -7,60 +7,63 @@ function New-AngularFeature
 
     $TemplateDir = "$PSScriptRoot\templates\angular2\feature"
 
-    $__Name = Get-NamingConventions -Name $Name
+    $Model = @{
+        Name = (Get-NamingConventions -Name $Name)
+        
+        Bundle = @{
+            Exports = @()
+        }
 
-    $BundleExportList = @()
-    
-    $ModuleImports = @()
-    $ModuleMetadataDeclarations = @()
-    $ModuleMetadataImports = @()
-    $ModuleMetadataExports = @()
-    $ModuleMetadataProviders = @()
-    $ModuleMetadata = @()
-    
+        Module = @{
+            Imports = @()
+            Metadata = @{
+                Declarations = @()
+                Exports = @()
+                Imports = @()
+                Providers = @()
+            }
+        }
+    }
+   
     # Create a new directory to house the feature
-    New-Item $__Name.Lowercase -ItemType Directory
+    New-Item $Model.Name.Lowercase -ItemType Directory
 
     # Import NgModule
-    $ModuleImports += Expand-Template -InputFile "$TemplateDir\import.psst" -Path '@angular/core' -Imports NgModule
+    $Model.Module.Imports += New-AngularImport -Imports 'NgModule' -Path '@angular/core'
     
     # Import CommonModule
-    $ModuleImports += Expand-Template -InputFile "$TemplateDir\import.psst" -Path '@angular/common' -Imports CommonModule
-    $ModuleMetadataImports += "CommonModule"
+    $Model.Module.Imports += New-AngularImport -Imports @('CommonModule') -Path '@angular/common'
+    $Model.Module.Metadata.Imports += "CommonModule"
+
+    # Add the module to the bundle export list
+    $Model.Bundle.Exports += Expand-Template -InputFile "$TemplateDir\index.export.psst" -Path "./$($Model.Name.KebabCase).module"
 
     if ($Routing) {
-        Expand-Template -InputFile "$TemplateDir\routing.ts.psst" `
-            -OutputFile "$($__Name.Lowercase)\$($__Name.KebabCase).routing.ts" `
-            -Name $__Name
-
         # Add the routing module to the bundle export list
-        
-        $BundleExportList += Expand-Template -InputFile "$TemplateDir\index.export.psst" -Path "./$($__Name.KebabCase).routing"
-        
-        $ModuleImports += Expand-Template -InputFile "$TemplateDir\import.psst" -Path "./$($__Name.KebabCase).routing" -Imports @("$($__Name)Routing","$($__Name)RoutingProviders")
-        $ModuleMetadataImports += "$($__Name)Routing" 
-        $ModuleMetadataProviders += "$($__Name)RoutingProviders"
-        # need to import in module
+        $Model.Bundle.Exports = Expand-Template -InputFile "$TemplateDir\index.export.psst" -Path "./$($Model.Name.KebabCase).routing" 
+
+        # Import the routing module and providers
+        $Model.Module.Imports += New-AngularImport -Imports @("$($Model.Name)Routing","$($Model.Name)RoutingProviders") -Path "./$($Model.Name.KebabCase).routing"
+        $Model.Module.Metadata.Imports += "$($Model.Name)Routing"
+        $Model.Module.Metadata.Providers += "$($Model.Name)RoutingProviders"
     }
 
-    # Construct the NgModule metadata
-    $ModuleMetadata += Expand-Template -InputFile "$TemplateDir\module.metadata.declarations.psst" -Declarations $ModuleMetadataDeclarations 
-    $ModuleMetadata += Expand-Template -InputFile "$TemplateDir\module.metadata.imports.psst" -Imports $ModuleMetadataImports 
-    $ModuleMetadata += Expand-Template -InputFile "$TemplateDir\module.metadata.exports.psst" -Exports $ModuleMetadataExports
-    $ModuleMetadata += Expand-Template -InputFile "$TemplateDir\module.metadata.providers.psst" -Providers $ModuleMetadataProviders
-
     # Create the module file
-    Expand-Template -InputFile "$TemplateDir\module.ts.psst" `
-        -OutputFile "$($__Name.Lowercase)\$($__Name.KebabCase).module.ts" `
-        -Name $__Name `
-        -Imports $ModuleImports `
-        -ModuleMetadata $ModuleMetadata
+    Expand-Template `
+        -InputFile "$TemplateDir\module.ts.psst" `
+        -OutputFile "$($Model.Name.KebabCase)\$($Model.Name.KebabCase).module.ts" `
+        -Model $Model.Module
     
-    # Add the module to the bundle export list
-    $BundleExportList += Expand-Template -InputFile "$TemplateDir\index.export.psst" -Path "./$($__Name.KebabCase).module"
-
     # Create a new bundle file to export the feature contents
     Expand-Template -InputFile "$TemplateDir\index.ts.psst" `
-        -OutputFile "$($__Name.Lowercase)\index.ts" `
-        -Exports $BundleExportList
+        -OutputFile "$($Model.Name.KebabCase)\index.ts" `
+        -Model $Model.Bundle
+
+    # Create the routing file 
+    if ($Routing) {
+        Expand-Template `
+            -InputFile "$TemplateDir\routing.ts.psst" `
+            -OutputFile "$($Model.Name.KebabCase)\$($Model.Name.KebabCase).routing.ts" `
+            -Model $Model
+    }
 }

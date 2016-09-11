@@ -1,1 +1,1 @@
-$([String]::Join("`r`n", $Exports))
+$([String]::Join("`r`n", $Model.Exports))

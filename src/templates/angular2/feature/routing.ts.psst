@@ -1,12 +1,12 @@
 import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-const $($Name.Lowercase)Routes: Routes = [
-    // { path: '', component: $($Name)Component }
+const $($Model.Name.Lowercase)Routes: Routes = [
+    // { path: '', component: $($Model.Name)Component }
 ];
 
-export const $($Name)RoutingProviders: any[] = [
+export const $($Model.Name)RoutingProviders: any[] = [
 
 ];
 
-export const $($Name)Routing: ModuleWithProviders = RouterModule.forChild($($Name.Lowercase)Routes);
+export const $($Model.Name)Routing: ModuleWithProviders = RouterModule.forChild($($Model.Name.Lowercase)Routes);

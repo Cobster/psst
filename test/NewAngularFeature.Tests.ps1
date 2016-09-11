@@ -2,6 +2,12 @@ $src = (Split-Path -Parent $MyInvocation.MyCommand.Path) -replace '\\test', '\\s
 $sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path) -replace '\.Tests\.', '.'
 . "$src\$sut"
 
+. "$src\ExpandTemplate.ps1"
+. "$src\ConvertToKebabCase.ps1"
+. "$src\GetNamingConventions.ps1"
+. "$src\NewAngularImport.ps1"
+. "$src\NewMetadata.ps1"
+
 Describe "New-AngularFeature" {
     $TestDirectory = "TestDrive:\Test"
 
