@@ -1,6 +1,5 @@
 $src = (Split-Path -Parent $MyInvocation.MyCommand.Path) -replace '\\test', '\\src' 
-$sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path) -replace '\.Tests\.', '.'
-. "$src\$sut"
+Import-Module $src\Psst.psd1
 
 Describe "Expand-Template" {
 

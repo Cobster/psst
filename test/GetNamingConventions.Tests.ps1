@@ -1,8 +1,5 @@
 $src = (Split-Path -Parent $MyInvocation.MyCommand.Path) -replace '\\test', '\\src' 
-$sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path) -replace '\.Tests\.', '.'
-. "$src\$sut"
-
-. "$src\ConvertToKebabCase.ps1"
+Import-Module $src\Psst.psd1
 
 Describe "Get-NamingConventions" {
 
