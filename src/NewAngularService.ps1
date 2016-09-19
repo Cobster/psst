@@ -26,7 +26,7 @@ function New-AngularService {
         $Model.Constructor.Arguments += "private http: Http"
     }
 
-    Expand-Template -InputFile "$TemplateDirectory\service.ts.psst" -OutputFile "$pwd\$($Model.Name.KebabCase).service.ts" -Model $Model
-    Expand-Template -InputFile "$TemplateDirectory\service.spec.psst" -OutputFile "$pwd\$($Model.Name.KebabCase).service.spec.ts" -Model $Model
+    Expand-Template -InputFile "$TemplateDirectory\service.ts" -OutputFile "$pwd\$($Model.Name.KebabCase).service.ts" -Model $Model
+    Expand-Template -InputFile "$TemplateDirectory\service.spec.ts" -OutputFile "$pwd\$($Model.Name.KebabCase).service.spec.ts" -Model $Model
 }
 
