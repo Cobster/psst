@@ -5,6 +5,7 @@ $Psst = Import-PowerShellDataFile "$PSScriptRoot\psst.psd1"
 . $PSScriptRoot\ExpandTemplate.ps1
 . $PSScriptRoot\GetNamingConventions.ps1
 
+. $PSScriptRoot\NewExport.ps1
 . $PSScriptRoot\NewImport.ps1
 . $PSScriptRoot\NewMetadata.ps1
 

@@ -36,11 +36,11 @@ function New-AngularFeature
     $Model.Module.Metadata.Imports += "CommonModule"
 
     # Add the module to the bundle export list
-    $Model.Bundle.Exports += Expand-Template -InputFile "$TemplateDir\index.export.ts" -Path "./$($Model.Name.KebabCase).module"
-
+    $Model.Bundle.Exports += New-Export -Path "./$($Model.Name.KebabCase).module" 
+    
     if ($Routing) {
         # Add the routing module to the bundle export list
-        $Model.Bundle.Exports = Expand-Template -InputFile "$TemplateDir\index.export.ts" -Path "./$($Model.Name.KebabCase).routing" 
+        $Model.Bundle.Exports = New-Export -Path "./$($Model.Name.KebabCase).routing" 
 
         # Import the routing module and providers
         $Model.Module.Imports += New-Import -Imports @("$($Model.Name)Routing","$($Model.Name)RoutingProviders") -Path "./$($Model.Name.KebabCase).routing"

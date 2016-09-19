@@ -6,7 +6,7 @@ function New-Metadata
     )
 
     Expand-Template `
-        -InputFile "$PSScriptRoot\templates\angular2\metadata.psst" `
+        -InputFile "$PSScriptRoot\templates\angular2\metadata.ts" `
         -Name $Metadata `
         -Model $Model
 }
