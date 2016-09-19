@@ -29,10 +29,10 @@ function New-AngularFeature
     New-Item $Model.Name.Lowercase -ItemType Directory
 
     # Import NgModule
-    $Model.Module.Imports += New-AngularImport -Imports 'NgModule' -Path '@angular/core'
+    $Model.Module.Imports += New-Import -Imports 'NgModule' -Path '@angular/core'
     
     # Import CommonModule
-    $Model.Module.Imports += New-AngularImport -Imports @('CommonModule') -Path '@angular/common'
+    $Model.Module.Imports += New-Import -Imports @('CommonModule') -Path '@angular/common'
     $Model.Module.Metadata.Imports += "CommonModule"
 
     # Add the module to the bundle export list
@@ -43,7 +43,7 @@ function New-AngularFeature
         $Model.Bundle.Exports = Expand-Template -InputFile "$TemplateDir\index.export.ts" -Path "./$($Model.Name.KebabCase).routing" 
 
         # Import the routing module and providers
-        $Model.Module.Imports += New-AngularImport -Imports @("$($Model.Name)Routing","$($Model.Name)RoutingProviders") -Path "./$($Model.Name.KebabCase).routing"
+        $Model.Module.Imports += New-Import -Imports @("$($Model.Name)Routing","$($Model.Name)RoutingProviders") -Path "./$($Model.Name.KebabCase).routing"
         $Model.Module.Metadata.Imports += "$($Model.Name)Routing"
         $Model.Module.Metadata.Providers += "$($Model.Name)RoutingProviders"
     }

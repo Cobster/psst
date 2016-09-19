@@ -1,4 +1,4 @@
-function New-AngularImport
+function New-Import
 {
     param (
         [string[]] $Imports,
@@ -6,7 +6,7 @@ function New-AngularImport
     )
 
     Expand-Template `
-        -InputFile "$PSScriptRoot\templates\angular2\import.psst" `
+        -InputFile "$PSScriptRoot\templates\angular2\import.ts" `
         -Imports $Imports `
         -Path $Path
 }

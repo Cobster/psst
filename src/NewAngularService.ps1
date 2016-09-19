@@ -19,10 +19,10 @@ function New-AngularService {
         }
     }
 
-    $Model.Imports += New-AngularImport -Imports @('Injectable') -Path '@angular/core' 
+    $Model.Imports += New-Import -Imports @('Injectable') -Path '@angular/core' 
 
     if ($Http) {
-        $Model.Imports += New-AngularImport -Imports Http -Path '@angular/http'
+        $Model.Imports += New-Import -Imports Http -Path '@angular/http'
         $Model.Constructor.Arguments += "private http: Http"
     }
 
