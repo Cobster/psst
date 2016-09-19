@@ -14,10 +14,10 @@ generated are powershell equivalents to those created by the
 ## Example psst templates
 
 **Important!** Do not use double quotes when defining a template. This will cause the PowerShell to 
-evaluate any replace variables during the initialization of the template. We want the expansion to 
+evaluate the replacement variables during the initialization of the template. We want the expansion to 
 occur inside the Expand-Template function call, so the template must be defined as a string literal.
 
-#### A string literal template. 
+#### A string template example 
 
     
     # Using double quotes will cause 
@@ -29,7 +29,7 @@ Outputs:
 
     Hello World
 
-#### A here-string literal template
+#### A here-string template example
 
     $template = @'
         
@@ -65,7 +65,39 @@ Outputs:
         }
     }
 
+#### Template file example
 
+service.ts:
+
+    import { Injectable } from '@angular/core';
+
+    @Injectable()
+    export class $($Name)Service {
+        constructor() { }
+    }
+
+Code:
+
+    Expand-Template -InputFile service.ts -Name My
+
+Outputs:
+
+    import { Injectable } from '@angular/core';
+
+    @Injectable()
+    export class MyService {
+        constructor() { }
+    }
+
+## Angular 2 scaffolding functions
+
+#### New-AngularApplication
+
+#### New-AngularComponent
+
+#### New-AngularFeature
+
+#### New-AngularService
 
 ## Maintainers
 

@@ -1,13 +1,16 @@
 function New-AngularApplication 
 {
     param (
-        [string] $Name
+        [string] $Name,
+        [string] $Title = $Name,
+        [string] $Styles
     )
 
     $TemplateDir = "$PSScriptRoot\templates\angular2\app"
 
     $Model = @{
         Name = (Get-NamingConventions $Name)
+        Title = $Title
     }
 
 
@@ -26,4 +29,31 @@ function New-AngularApplication
 
     #Documentation
     Expand-Template -InputFile "$TemplateDir\README.md" -OutputFile "$pwd\README.md" -Model $Model
+
+    #Client-Side Application
+    New-Item "$pwd\Client" -ItemType Directory
+    Expand-Template -InputFile "$TemplateDir\client\vendor.ts" -OutputFile "$pwd\Client\vendor.ts" -Model $Model
+    Expand-Template -InputFile "$TemplateDir\client\polyfills.ts" -OutputFile "$pwd\Client\polyfills.ts" -Model $Model
+    Expand-Template -InputFile "$TemplateDir\client\main.ts" -OutputFile "$pwd\Client\main.ts" -Model $Model
+    Expand-Template -Inputfile "$TemplateDir\client\index.html" -OutputFile "$pwd\Client\index.html" -Model $Model
+
+    # Add a base styles file
+    if (-not [String]::IsNullOrWhiteSpace($Styles)) {
+
+        $StylesExtension = $Styles.ToLower()
+        if ($StylesExtension -eq 'sass') {
+            $StylesExtension = 'scss'
+        }
+
+        if ($StylesExtension -eq 'sass' -or $StylesExtension -eq 'scss') {
+            Expand-Template -InputFile "$TemplateDir\client\styles.scss" -OutputFile "$pwd\Client\styles.scss" -Model $Model
+        } 
+        elseif ($StylesExtension -eq 'css') {
+            Expand-Template -InputFile "$TemplateDir\client\styles.css" -OutputFile "$pwd\Client\styles.css" -Model $Model
+        }
+        elseif ($StylesExtension -eq 'less') {
+            Expand-Template -InputFile "$TemplateDir\client\styles.less" -OutputFile "$pwd\Client\styles.less" -Model $Model
+        }
+    }
+
 }
