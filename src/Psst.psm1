@@ -14,4 +14,6 @@ $Psst = Import-PowerShellDataFile "$PSScriptRoot\psst.psd1"
 . $PSScriptRoot\NewAngularFeature.ps1
 . $PSScriptRoot\NewAngularService.ps1
 
+. $PSScriptRoot\NewAngularRouting.ps1
+
 Export-ModuleMember -Function *-* 

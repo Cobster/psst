@@ -56,4 +56,10 @@ function New-AngularApplication
         }
     }
 
+    # Root Module
+    New-Item "$pwd\Client\app" -ItemType Directory
+    Expand-Template -InputFile "$TemplateDir\client\app\app.module.ts" -OutputFile "$pwd\Client\app\app.module.ts" -Model $Model
+    Expand-Template -InputFile "$TemplateDir\client\app\app.component.ts" -OutputFile "$pwd\Client\app\app.component.ts" -Model $Model
+    New-AngularRouting -Name App -Root | Out-File "$pwd\Client\app\app.routing.ts"
+    
 }

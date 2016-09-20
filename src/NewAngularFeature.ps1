@@ -61,9 +61,11 @@ function New-AngularFeature
 
     # Create the routing file 
     if ($Routing) {
-        Expand-Template `
-            -InputFile "$TemplateDir\routing.ts" `
-            -OutputFile "$($Model.Name.KebabCase)\$($Model.Name.KebabCase).routing.ts" `
-            -Model $Model
+        New-AngularRouting -Name $Name | Out-File "$($Model.Name.KebabCase)\$($Model.Name.KebabCase).routing.ts"
+
+        # Expand-Template `
+        #     -InputFile "$TemplateDir\routing.ts" `
+        #     -OutputFile "$($Model.Name.KebabCase)\$($Model.Name.KebabCase).routing.ts" `
+        #     -Model $Model
     }
 }

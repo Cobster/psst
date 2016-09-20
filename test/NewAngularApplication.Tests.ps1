@@ -109,4 +109,34 @@ Describe "New-AngularApplication" {
         New-AngularApplication -Name "MyTest" -Styles Less
         "$TestDirectory\Client\styles.less" | Should Exist
     }
+
+    It "Should generate an 'app' root module" {
+        New-AngularApplication -Name "MyTest"
+        "$TestDirectory\Client\app\app.module.ts" | Should Exist
+    }
+
+    It "Should generate an 'AppModule' class" {
+        New-AngularApplication -Name "MyTest"
+        "$TestDirectory\Client\app\app.module.ts" | Should Contain "export class AppModule"
+    }
+
+    It "Should generate an 'app.component'" {
+        New-AngularApplication -Name "MyTest"
+        "$TestDirectory\Client\app\app.component.ts" | Should Exist
+    }
+
+    It "Should generate an 'AppComponent' class" {
+        New-AngularApplication -Name "MyTest" 
+        "$TestDirectory\Client\app\app.component.ts" | Should Contain "export class AppComponent"
+    }
+
+    It "Should generate an application specific selector" {
+        New-AngularApplication -Name "MyTest" 
+        "$TestDirectory\Client\app\app.component.ts" | Should Contain "selector\: 'my\-test\-app'"
+    }
+
+    It "Should generate an app routing module" {
+        New-AngularApplication -Name "MyTest"
+        "$TestDirectory\Client\app\app.routing.ts" | Should Exist
+    }
 }
