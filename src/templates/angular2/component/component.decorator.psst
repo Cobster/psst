@@ -1,1 +1,0 @@
-@Component({`r`n`t$([String]::Join(",`r`n`t", $ComponentMetadata))`r`n})
