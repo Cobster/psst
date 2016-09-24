@@ -2,7 +2,7 @@ $src = (Split-Path -Parent $MyInvocation.MyCommand.Path) -replace '\\test', '\\s
 Import-Module $src\Psst.psd1
 
 Describe "New-AngularApplication" {
-    $TestDirectory = "TestDrive:\Test"
+    $TestDirectory = [IO.Path]::Combine([IO.Path]::GetTempPath(), [IO.Path]::GetRandomFileName())
 
     BeforeEach {
         New-Item $TestDirectory -ItemType Directory

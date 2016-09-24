@@ -64,7 +64,11 @@ function Expand-Template
     $Artifact = $ExecutionContext.InvokeCommand.ExpandString($Template)
 
     if (-not [string]::IsNullOrEmpty($OutputFile)) {
-        $Artifact | Out-File -FilePath $OutputFile -NoNewline
+
+        # Write the content of file with a UTF8 BOM
+        $Encoding = New-Object System.Text.UTF8Encoding($false)
+        
+        [System.IO.File]::WriteAllText($OutputFile, $Artifact, $Encoding)
     }
     else {
         $Artifact

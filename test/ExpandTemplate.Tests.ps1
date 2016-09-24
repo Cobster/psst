@@ -3,6 +3,18 @@ Import-Module $src\Psst.psd1
 
 Describe "Expand-Template" {
 
+    $TestDirectory = [IO.Path]::Combine([IO.Path]::GetTempPath(), [IO.Path]::GetRandomFileName())
+
+    BeforeEach {
+        New-Item $TestDirectory -ItemType Directory
+        Push-Location $TestDirectory
+    }
+
+    AfterEach {
+        Pop-Location
+        Remove-Item $TestDirectory -Force -Recurse
+    }
+
     It "Should replace an unbound parameter" {
         Expand-Template '$Foo' -Foo "Bar" | Should Be "Bar"
     }
@@ -17,8 +29,8 @@ Describe "Expand-Template" {
     }
 
     It "Should write result to file when -OutputFile is specified" {
-        Expand-Template '$Greeting $Target' -Greeting Hello -Target World -OutputFile "TestDrive:\Result"
-        Get-Content "TestDrive:\Result" | Should Be "Hello World"
+        Expand-Template '$Greeting $Target' -Greeting Hello -Target World -OutputFile "$TestDirectory\Result"
+        Get-Content "$TestDirectory\Result" | Should Be "Hello World"
     }
 
     It "Should use template file when -InputFile is specified" {

@@ -51,17 +51,17 @@ function New-AngularFeature
     # Create the module file
     Expand-Template `
         -InputFile "$TemplateDir\module.ts" `
-        -OutputFile "$($Model.Name.KebabCase)\$($Model.Name.KebabCase).module.ts" `
+        -OutputFile "$pwd\$($Model.Name.KebabCase)\$($Model.Name.KebabCase).module.ts" `
         -Model $Model.Module
     
     # Create a new bundle file to export the feature contents
     Expand-Template -InputFile "$TemplateDir\index.ts" `
-        -OutputFile "$($Model.Name.KebabCase)\index.ts" `
+        -OutputFile "$pwd\$($Model.Name.KebabCase)\index.ts" `
         -Model $Model.Bundle
 
     # Create the routing file 
     if ($Routing) {
-        New-AngularRouting -Name $Name | Out-File "$($Model.Name.KebabCase)\$($Model.Name.KebabCase).routing.ts"
+        New-AngularRouting -Name $Name | Out-File "$pwd\$($Model.Name.KebabCase)\$($Model.Name.KebabCase).routing.ts"
 
         # Expand-Template `
         #     -InputFile "$TemplateDir\routing.ts" `
