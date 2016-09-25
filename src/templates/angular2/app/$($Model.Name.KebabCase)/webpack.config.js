@@ -9,16 +9,16 @@ module.exports = (function() {
     var config = {
 
         entry: {
-            'polyfills': './client/polyfills.ts',   
-            'vendor': './client/vendor.ts',
-            'app': './client/main.ts'
+            'polyfills': './$($Model.SourceFolder)/polyfills.ts',   
+            'vendor': './$($Model.SourceFolder)/vendor.ts',
+            'app': './$($Model.SourceFolder)/main.ts'
         },
 
         output: {
-            path: helpers.root('wwwroot/dist'),
+            path: helpers.root('$($Model.ArtifactsFolder)'),
             publicPath: '/dist',
             filename: '[name].js',
-            chunckFilename: '[id].chunk.js'
+            chunkFilename: '[id].chunk.js'
         },
 
         resolve: {
@@ -46,34 +46,34 @@ module.exports = (function() {
                 },
                 {
                     test: /\.scss$/,
-                    exclude: helpers.root('client','app'),
+                    exclude: helpers.root('$($Model.SourceFolder)/app'),
                     loader: ExtractTextPlugin.extract('style', 'css?sourceMap!sass?sourceMap')
                 },
                 {
                     test: /\.scss$/,
-                    include: helpers.root('client','app'),
+                    include: helpers.root('$($Model.SourceFolder)/app'),
                     loader: 'raw!sass'
                 },
                 {
                     test: /\.css$/,
-                    exclude: helpers.root('client','app'),
+                    exclude: helpers.root('$($Model.SourceFolder)/app'),
                     loader: ExtractTextPlugin.extract('style', 'css?sourceMap')
                 },
                 {
                     test: /\.css$/,
-                    include: helpers.root('client','app'),
+                    include: helpers.root('$($Model.SourceFolder)/app'),
                     loader: 'raw'
                 }
             ]
         },
 
         plugins: [
-            new CleanWebpackPlugin([helpers.root('wwwroot/dist')]),
+            new CleanWebpackPlugin([helpers.root('$($Model.ArtifactsFolder)')]),
             new webpack.optimize.CommonsChunkPlugin({
                 name: ['app','vendor','polyfills']
             }),
             new HtmlWebpackPlugin({
-                template: 'client/index.html'
+                template: '$($Model.SourceFolder)/index.html'
             }),
             new ExtractTextPlugin("site.css")
         ]

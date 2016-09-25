@@ -10,3 +10,8 @@ Run `New-AngularComponent` to build a new component. This will create the typesc
 and optionally styling file.
 
 Run `New-AngularService` to build a new service.
+
+## Testing 
+
+To run the tests from the command line. Type `npm test`. 
+This will start the karma test runner using phantom js as the browser.  
