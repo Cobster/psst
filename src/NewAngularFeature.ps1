@@ -1,11 +1,13 @@
 function New-AngularFeature
 {
+    [CmdletBinding()]
     param (
         [string] $Name,
         [switch] $Routing
     )
 
     $TemplateDir = "$PsstTemplateRoot\angular2\feature"
+    $Excludes = @()
 
     $Model = @{
         Name = (Get-NamingConventions -Name $Name)
@@ -46,7 +48,9 @@ function New-AngularFeature
         $Model.Module.Imports += New-Import -Imports @("$($Model.Name)Routing","$($Model.Name)RoutingProviders") -Path "./$($Model.Name.KebabCase).routing"
         $Model.Module.Metadata.Imports += "$($Model.Name)Routing"
         $Model.Module.Metadata.Providers += "$($Model.Name)RoutingProviders"
+    } else {
+        $Excludes += Join-Path $TemplateDir '$($Model.Name.KebabCase)\$($Model.Name.KebabCase).routing.ts'
     }
 
-    Expand-TemplateDirectory -InputPath $TemplateDir -Model $Model
+    Expand-TemplateDirectory -InputPath $TemplateDir -Model $Model -Exclude $Excludes
 }

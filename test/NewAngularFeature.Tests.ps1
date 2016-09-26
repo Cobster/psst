@@ -40,6 +40,12 @@ Describe "New-AngularFeature" {
         "$TestDirectory\items\items.routing.ts" | Should Exist
     }
 
+    It "Should not create a routing module when -Routing is not specified" {
+        New-AngularFeature -Name Items
+        "$TestDirectory\items\items.routing.ts" | Should Not Exist
+    }
+
+
     It "Should export the routing module from the bundle when -Routing is specified" {
         New-AngularFeature -Name Items -Routing
         "$TestDirectory\items\index.ts" | Should Contain "export \* from \'\.\/items\.routing\';"
