@@ -5,7 +5,7 @@ function New-AngularFeature
         [switch] $Routing
     )
 
-    $TemplateDir = "$PSScriptRoot\templates\angular2\feature"
+    $TemplateDir = "$PsstTemplateRoot\angular2\feature"
 
     $Model = @{
         Name = (Get-NamingConventions -Name $Name)
@@ -48,24 +48,5 @@ function New-AngularFeature
         $Model.Module.Metadata.Providers += "$($Model.Name)RoutingProviders"
     }
 
-    # Create the module file
-    Expand-Template `
-        -InputFile "$TemplateDir\module.ts" `
-        -OutputFile "$pwd\$($Model.Name.KebabCase)\$($Model.Name.KebabCase).module.ts" `
-        -Model $Model.Module
-    
-    # Create a new bundle file to export the feature contents
-    Expand-Template -InputFile "$TemplateDir\index.ts" `
-        -OutputFile "$pwd\$($Model.Name.KebabCase)\index.ts" `
-        -Model $Model.Bundle
-
-    # Create the routing file 
-    if ($Routing) {
-        New-AngularRouting -Name $Name | Out-File "$pwd\$($Model.Name.KebabCase)\$($Model.Name.KebabCase).routing.ts"
-
-        # Expand-Template `
-        #     -InputFile "$TemplateDir\routing.ts" `
-        #     -OutputFile "$($Model.Name.KebabCase)\$($Model.Name.KebabCase).routing.ts" `
-        #     -Model $Model
-    }
+    Expand-TemplateDirectory -InputPath $TemplateDir -Model $Model
 }
