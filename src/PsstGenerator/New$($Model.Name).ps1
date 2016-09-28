@@ -23,10 +23,9 @@ function New-$($Model.Name.UpperCamelCase)
     `$Model = @{
         # Name = (Get-NamingConventions `$Name)
         TemplateDir = `$TemplateDir
-        
-        # todo: New-PsstGenerator needs to compute the current module
-        # Psst is content of 'Psst.psd1' it is defined a varaible by Psst.psm1
-        # Module = (Import-PowerShellDataFile "$PSScriptRoot\psst.psd1") 
+
+        # Uncomment to add the data in the module to the model        
+        # Module = `$ModuleData 
     }
 
     # A list of paths in the template directory which will not be expanded.

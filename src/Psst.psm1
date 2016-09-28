@@ -2,6 +2,7 @@
 $PsstTemplateRoot = "$PSScriptRoot\templates"
 
 $Psst = Import-PowerShellDataFile "$PSScriptRoot\psst.psd1"
+$ModuleData = Import-PowerShellDataFile "$PSScriptRoot\psst.psd1"
 
 . $PSScriptRoot\ConvertToKebabCase.ps1
 . $PSScriptRoot\ExpandTemplate.ps1
