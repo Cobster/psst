@@ -1,1 +1,0 @@
-$Metadata`: [`r`n`t`t$([String]::Join(",`r`n`t`t", $Model))`r`n`t]

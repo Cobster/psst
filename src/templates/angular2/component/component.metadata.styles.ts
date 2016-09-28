@@ -1,1 +1,0 @@
-styles: [require('./$($Name.KebabCase).$Stereotype.$Extension')]

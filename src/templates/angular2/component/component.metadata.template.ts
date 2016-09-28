@@ -1,1 +1,0 @@
-template: require('./$($Name.KebabCase).component.html')

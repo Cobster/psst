@@ -62,16 +62,8 @@ FunctionsToExport = @(
     'Expand-Template',
     'Expand-TemplateDirectory',
     'Get-NamingConventions',
-
     'New-PsstGenerator',
-    'New-PsstGeneratorModule',
-
-    'New-AngularApplication',
-    'New-AngularComponent',
-    'New-AngularFeature',
-    'New-AngularService',
-
-    'New-AspNetCoreWebApi'
+    'New-PsstGeneratorModule'
 )
 
 # Cmdlets to export from this module
