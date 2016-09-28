@@ -9,6 +9,7 @@ $Psst = Import-PowerShellDataFile "$PSScriptRoot\psst.psd1"
 . $PSScriptRoot\ExpandTemplateDirectory.ps1
 
 . $PSScriptRoot\NewPsstGenerator.ps1
+. $PSScriptRoot\NewPsstGeneratorModule.ps1
 
 . $PSScriptRoot\NewExport.ps1
 . $PSScriptRoot\NewImport.ps1

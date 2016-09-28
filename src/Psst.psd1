@@ -64,6 +64,7 @@ FunctionsToExport = @(
     'Get-NamingConventions',
 
     'New-PsstGenerator',
+    'New-PsstGeneratorModule',
 
     'New-AngularApplication',
     'New-AngularComponent',
