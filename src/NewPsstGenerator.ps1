@@ -2,6 +2,7 @@
 function New-PsstGenerator 
 {
 <#
+
 .SYNOPSIS
     Scaffolds the code files needed to create a Psst generator. 
 
@@ -20,20 +21,19 @@ function New-PsstGenerator
         [System.Management.Automation.PathInfo] $OutputPath = $PWD
     )
 
-    $TemplateDir = "$PSScriptRoot\generator"
+    $TemplateDir = "$PSScriptRoot\PsstGenerator"
 
     # Build the model
     $Model = @{
         Name = (Get-NamingConventions $Name)
         TemplateDir = $TemplateDir
         # Psst is content of 'Psst.psd1' it is defined a varaible by Psst.psm1
-        Module = (Import-PowerShellDataFile "$PSScriptRoot\psst.psd1") 
+        Module = (Import-PowerShellDataFile "$PSScriptRoot\psst.psd1")
+        Tests = "Tests" 
     }
 
     # A list of paths in the template directory which will not be expanded.
     $Exclude = @()
 
     Expand-TemplateDirectory -InputPath $TemplateDir -OutputPath $OutputPath -Model $Model -Exclude $Excludes 
-    
-
 }
