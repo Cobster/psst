@@ -2,7 +2,7 @@ $here = Split-Path -Parent $MyInvocation.MyCommand.Path
 $sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path) -replace '\.Tests\.', '.'
 . "$here\$sut"
 
-Import-Module $src\Psst.psd1
+Import-Module $here\Psst.psd1
 
 Describe "New-PsstGenerator" {
     $TestDirectory = [IO.Path]::Combine([IO.Path]::GetTempPath(), [IO.Path]::GetRandomFileName())
@@ -43,15 +43,5 @@ Describe "New-PsstGenerator" {
         New-PsstGenerator -Name AngularApplication
         "$TestDirectory\NewAngularApplication.Tests.ps1" | Should Exist
     }
-
-    # It "should add itself to the specified module" {
-    #     New-ModuleManifest -Path ExampleModule.psd1
-    #     New-PsstGenerator -Name Example -Module ExampleModule.psd1
-
-    #     $Module = Import-PowerShellDataFile -Path "ExampleModule.psd1"
-        
-    #     $Module.FunctionsToExport -contains 'New-Example' | Should Be $true
-
-    # }
 
 }

@@ -33,7 +33,7 @@ function New-PsstGenerator
     }
 
     # A list of paths in the template directory which will not be expanded.
-    $Exclude = @()
+    $Excludes = @('$($Model.Name)\.exclude')
 
     Expand-TemplateDirectory -InputPath $TemplateDir -OutputPath $OutputPath -Model $Model -Exclude $Excludes 
 }
