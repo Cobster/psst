@@ -15,8 +15,14 @@ Describe "New-$($Model.Name.UpperCamelCase)" {
         Remove-Item `$TestDirectory -Force -Recurse
     }
 
-    It "should create a new $($Model.Name)" {
-        New-$($Model.Name.UpperCamelCase) 
-        "`$TestDirectory\$($Model.Name)" | Should Exist
+    It "Should be listed in the module data FunctionsToExport property" {
+        `$ModulePath = Get-ChildItem "`$here\*.psd1" | Select-Object -First 1
+        `$ModuleData = Import-PowerShellDataFile -Path `$ModulePath.FullName
+        `$ModuleData.FunctionsToExport[0] -contains 'New-$($Model.Name.UpperCamelCase)' | Should Be $true
+    }
+
+    It "Should be dot sourced in the module file" {
+        `$ModulePath = Get-ChildItem "`$here\*.psm1" | Select-Object -First 1
+        "`$(`$ModulePath.FullName)" | Should Contain "\. \```$PSScriptRoot\\NewPsstGeneratorModule\.ps1"
     }
 }
