@@ -27,6 +27,11 @@ Describe "New-PsstGenerator" {
         "$TestDirectory\AngularApplication" | Should Exist
     }
 
+    It "Should not create a '.exclude' file in the template directory" {
+        New-PsstGenerator -Name AngularApplication -Verbose
+        "$TestDirectory\AngularApplication\.exclude" | Should Not Exist
+    }
+
     It "Should create a 'New' function for the generator" {
         New-PsstGenerator -Name AngularApplication
         "$TestDirectory\NewAngularApplication.ps1" | Should Contain "function New-AngularApplication"
