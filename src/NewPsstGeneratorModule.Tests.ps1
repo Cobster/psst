@@ -80,4 +80,9 @@ Describe "New-PsstGeneratorModule" {
         "$TestDirectory\Psst.Example\README.md" | Should Exist
     }
 
+    It "Should create a 'test.ps1' script file" {
+        New-PsstGeneratorModule -Name "Example"
+        "$TestDirectory\Psst.Example\test.ps1" | Should Exist
+    }
+
 }

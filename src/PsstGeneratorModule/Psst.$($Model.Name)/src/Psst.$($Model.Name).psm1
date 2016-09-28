@@ -1,5 +1,5 @@
 
-`$ModuleData = Import-PowerShellDataFile "`$PSScriptRoot\$($Model.Name).psd1"
+`$ModuleData = Import-PowerShellDataFile "`$PSScriptRoot\Psst.$($Model.Name).psd1"
 
 # Dot source the generator functions here
 
