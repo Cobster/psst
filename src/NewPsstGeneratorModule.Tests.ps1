@@ -18,7 +18,7 @@ Describe "New-PsstGeneratorModule" {
     It "Should be listed in the module data FunctionsToExport property" {
         $ModulePath = Get-ChildItem "$here\*.psd1" | Select-Object -First 1
         $ModuleData = Import-PowerShellDataFile -Path $ModulePath.FullName
-        $ModuleData.FunctionsToExport[0] -contains 'New-PsstGeneratorModule' | Should Be True
+        $ModuleData.FunctionsToExport -contains 'New-PsstGeneratorModule' | Should Be True
     }
 
     It "Should be dot sourced in the module file" {
@@ -67,7 +67,7 @@ Describe "New-PsstGeneratorModule" {
 
     It "Should define the `$ModuleData parameter in the module" {
         New-PsstGeneratorModule -name "Example"
-        "$TestDirectory\Psst.Example\src\Psst.Example.psm1" | Should Contain "\`$ModuleData = Import\-PowerShellDataFile \`"\`$PSScriptRoot\\Example\.psd1\`""
+        "$TestDirectory\Psst.Example\src\Psst.Example.psm1" | Should Contain "\`$ModuleData = Import\-PowerShellDataFile \`"\`$PSScriptRoot\\Psst\.Example\.psd1\`""
     }
 
     It "Should create a new LICENSE file" {
