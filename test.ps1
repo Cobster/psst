@@ -1,3 +1,3 @@
-Remove-Module Psst -ErrorAction SilentlyContinue
-Import-Module $PSScriptRoot\src\Psst.psd1
-Invoke-Pester $PSScriptRoot
+# Requires psake module
+
+Invoke-PSake -BuildFile $PSScriptRoot\psake.ps1 -TaskList Test
