@@ -12,8 +12,11 @@ Properties {
     $ReleaseDir = "$PSScriptRoot/release"
     $OutputDir = "$ReleaseDir/$ModuleName"
     $Exclude = @("*.Tests.ps1")
+
+    $NoBuildOutputErrorMessage = "There is no build output. Run psake build."
 }
 
+Task default -depends Build
 
 #
 # INIT
@@ -38,9 +41,31 @@ Task Clean -RequiredVariables ReleaseDir -Description "Deletes the contents of t
 #
 # BUILD
 #
-Task Build -Depends Init, Clean {
+Task Build `
+    -description "This copies all the powershell code and scaffolding templates to $OutputDir." `
+    -depends Init, Clean `
+{
     # Copy all the scripts into the release directory
     Copy-Item -Path $SrcDir -Destination $OutputDir -Recurse -Exclude $Exclude -Verbose:$VerbosePreference
+}
+
+#
+# IMPORT
+#
+Task "Import" `
+    -description "Imports the module under development into the current powershell session" `
+    -requiredVariables ModuleName, OutputDir `
+{
+    Assert -conditionToCheck (Test-Path $OutputDir) $NoBuildOutputErrorMessage
+
+    if ($null -ne (Get-Module -Name $ModuleName)) {
+        Write-Host "Removing $ModuleName"
+        Remove-Module $ModuleName
+    } 
+
+    $ImportPath = (Resolve-Path $OutputDir)
+    Write-Host "Importing $ModuleName from $ImportPath"
+    Import-Module $ImportPath
 }
 
 

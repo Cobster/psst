@@ -17,7 +17,7 @@ function New-PsstGeneratorModule
 
     [CmdletBinding()]
     param (
-        [System.Management.Automation.PathInfo] $OutputPath = $PWD,
+        [string] $OutputPath = $PWD,
 
         [string] $Name,
 

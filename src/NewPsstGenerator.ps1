@@ -18,7 +18,7 @@ function New-PsstGenerator
     [CmdletBinding()]
     param (
         [string] $Name,
-        [System.Management.Automation.PathInfo] $OutputPath = $PWD
+        [string] $OutputPath = $PWD
     )
 
     $TemplateDir = "$PSScriptRoot\PsstGenerator"

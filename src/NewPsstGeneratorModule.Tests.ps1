@@ -85,4 +85,9 @@ Describe "New-PsstGeneratorModule" {
         "$TestDirectory\Psst.Example\test.ps1" | Should Exist
     }
 
+    It "Should create a 'default.ps1' script file for psake" {
+        New-PsstGeneratorModule -Name "Example"
+        "$TestDirectory\Psst.Example\default.ps1" | Should Exist
+    }
+
 }
