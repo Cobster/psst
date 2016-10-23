@@ -1,16 +1,16 @@
 
 Properties {
 
-    $SrcDir = "$PSScriptRoot/src"
-    $TestDir = "$PSScriptRoot/src"
+    $SrcDir = "$PSScriptRoot\src"
+    $TestDir = "$PSScriptRoot\src"
 
     # This should match name of the PSD1 file. 
     $ModuleName = Get-Item $SrcDir/*.psd1 | 
         Where-Object { $null -ne (Test-ModuleManifest -Path $_ -ErrorAction SilentlyContinue) } |
         Select-Object -First 1 -ExpandProperty BaseName 
 
-    $ReleaseDir = "$PSScriptRoot/release"
-    $OutputDir = "$ReleaseDir/$ModuleName"
+    $ReleaseDir = "$PSScriptRoot\release"
+    $OutputDir = "$ReleaseDir\$ModuleName"
     $Exclude = @("*.Tests.ps1")
 
     $NoBuildOutputErrorMessage = "There is no build output. Run psake build."
@@ -66,6 +66,22 @@ Task "Import" `
     $ImportPath = (Resolve-Path $OutputDir)
     Write-Host "Importing $ModuleName from $ImportPath"
     Import-Module $ImportPath
+}
+
+Task Install `
+    -description "Copies the release module into the current users PowerShell module path." `
+    -requiredVariables ModuleName, OutputDir `
+{
+    Assert -conditionToCheck (Test-Path $OutputDir) $NoBuildOutputErrorMessage
+
+    $UserModulePath = "$env:HOME\Documents\WindowsPowerShell\Modules\Psst"
+    if (Test-Path $UserModulePath) {
+        Write-Host "Removing $UserModulePath"
+        Remove-Item $UserModulePath -Force -Recurse
+    }
+
+    Write-Host "Copying $OutputDir to $UserModulePath"    
+    Copy-Item $OutputDir -Destination $UserModulePath  -Recurse
 }
 
 
