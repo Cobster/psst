@@ -8,7 +8,7 @@ This is a psake build automation script.
 Properties {
 
     `$SrcDir = "`$PSScriptRoot/src"
-    `$TestDir = "`$PSScriptRoot/src"
+    `$TestDir = "`$PSScriptRoot"
 
     # This should match the name of the PSD1 file for the module.
     `$ModuleName = Get-Item `$SrcDir/*.psd1 |
@@ -21,7 +21,9 @@ Properties {
     `$TestFailureMessage = "One or more tests failed, build will not continue."
 }
 
-Task default -depends Build
+Task default -depends Pipeline
+
+Task Pipeline -depends Init, Clean, Build, Test
 
 #
 # INIT
@@ -41,7 +43,7 @@ Task Init ``
 #
 Task Clean ``
     -description "Deletes the contents of the release directory." ``
-    -requiredVariables ReleaseDir `` 
+    -requiredVariables ReleaseDir ``
 {
     if ((Test-Path `$ReleaseDir) -and `$ReleaseDir.StartsWith(`$PSScriptRoot, 'OrdinalIgnoreCase')) {
         Get-ChildItem `$ReleaseDir | Remove-Item -Recurse -Force -Verbose:`$VerbosePreference

@@ -80,14 +80,14 @@ Describe "New-PsstGeneratorModule" {
         "$TestDirectory\Psst.Example\README.md" | Should Exist
     }
 
-    It "Should create a 'test.ps1' script file" {
-        New-PsstGeneratorModule -Name "Example"
-        "$TestDirectory\Psst.Example\test.ps1" | Should Exist
-    }
-
     It "Should create a 'default.ps1' script file for psake" {
         New-PsstGeneratorModule -Name "Example"
         "$TestDirectory\Psst.Example\default.ps1" | Should Exist
+    }
+
+    It "Should create a 'build.Tests.ps1' which defines tests that verify the project was scaffolded correctly" {
+        New-PsstGeneratorModule -Name "Example"
+        "$TestDirectory\Psst.Example\build.Tests.ps1" | Should Exist
     }
 
 }

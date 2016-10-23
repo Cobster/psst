@@ -34,6 +34,8 @@ function New-PsstGeneratorModule
         TemplateDir = $TemplateDir
         Version = $Version
         Module = $ModuleData
+        Tests = "Tests"
+        FullName = (Get-NamingConventions "Psst.$Name")
     }
 
     # A list of paths in the template directory which will not be expanded.
