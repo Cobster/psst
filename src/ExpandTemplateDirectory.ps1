@@ -13,7 +13,10 @@ function Expand-TemplateDirectory
     # Check to see if the InputPath is a directory 
     if ($false -eq (Test-Path $InputPath -PathType Container)) {
 
-        $ModuleName = Split-Path $PSScriptRoot -Leaf
+        $ModuleName = Get-Item $PSScriptRoot\*.psd1 | 
+            Where-Object { $null -ne (Test-ModuleManifest -Path $_ -ErrorAction SilentlyContinue) } |
+            Select-Object -First 1 -ExpandProperty BaseName 
+
         $TemplateName = Split-Path $InputPath -Leaf
         $LocalAppData = [Environment]::GetFolderPath("LocalApplicationData")
         $TargetPath = [IO.Path]::Combine($LocalAppData, $ModuleName, $Model.Psst.ModuleVersion)
