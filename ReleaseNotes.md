@@ -1,14 +1,18 @@
-# [0.1.1](https://github.com/cobster/psst/compare/0.1.0...0.1.1) (2016-10-24)
+# [0.2.0](https://github.com/cobster/psst/compare/0.1.0...0.2.0) (2016-10-24)
 
 ### Bug Fixes
 
 * Parameterized template file names where uri encoded by nuget.
+* Expands template files into local application data.
 
 ### Features
 
 * Adds publishing build task
 * Adds versioning to build
 
+### Notes
+
+* PowerShell 5.0.010586.117 contains a bug that causes the SetVersion build task to overwrite the FunctionsToExport as a space delimited string. Upgrade to 5.1.14394.1000.
 
 # [0.1.0]() (2016-10-23)
 

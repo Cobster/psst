@@ -6,8 +6,8 @@ param (
 )
 
 # Get version from version file if not defined.
-if ($Version -eq $null) {
-    $Version = Get-Content $PSScriptRoot\version;
+if ([string]::IsNullOrWhitespace($Version)) {
+    $Version = Get-Content $PSScriptRoot\version
 }
 
 if ($BuildNumber -ne $null) {

@@ -2,7 +2,7 @@
 Properties {
     
     if ($Version -eq $null) {
-        $Version = "0.1.1"
+        $Version = Get-Content "$PSScriptRoot\version"
     }
 
     $SrcDir = "$PSScriptRoot\src"
@@ -16,6 +16,8 @@ Properties {
     $ReleaseDir = "$PSScriptRoot\release"
     $OutputDir = "$ReleaseDir\$ModuleName"
     $Exclude = @("*.Tests.ps1")
+
+    $ReleaseNotes = "https://github.com/Cobster/psst/blob/master/ReleaseNotes.md"
 
     $SettingsPath = "$env:LOCALAPPDATA\Psst\SecuredBuildSettings.clixml"
 
@@ -34,9 +36,7 @@ Properties {
 
 Task default -depends Build
 
-Task Build -depends Init, Clean, BuildImpl, SetVersion, CompressTemplates, Compress
-
-Task release -depends Init, Clean, Test, BuildImpl, CompressTemplates, Compress 
+Task Build -depends Init, Clean, BuildImpl, UpdateModuleManifest, CompressTemplates, Compress
 
 #
 # INIT
@@ -66,14 +66,16 @@ Task Clean `
 }
 
 #
-# SET VERSION
+# UPDATE MODULE MANIFEST
 # 
-Task SetVersion `
-    -description "Updates the version of the release module to the specified version" `
-    -requiredVariables OutputDir, Version `
+Task UpdateModuleManifest `
+    -description "Updates the module manifest file; sets the correct build number and updates other metadata." `
+    -requiredVariables OutputDir, ReleaseNotes, Version `
 {
     Write-Verbose "Setting version to $Version"
-    Update-ModuleManifest -Path $OutputDir\Psst.psd1 -ModuleVersion $Version
+    Update-ModuleManifest -Path $OutputDir\Psst.psd1 `
+        -ModuleVersion $Version `
+        -ReleaseNotes $ReleaseNotes
 }
 
 #
