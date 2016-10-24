@@ -99,14 +99,10 @@ Task Test `
     Import-Module Pester
 
     try {
-        Push-Location $TestDir
-
-        $TestResult = Invoke-Pester -Quiet:$Quiet -PassThru -Verbose:$VerbosePreference
-
+        $TestResult = Invoke-Pester -Script $TestDir -OutputFormat NUnitXml -OutputFile PesterTestResults.xml -Quiet:$Quiet -PassThru -Verbose:$VerbosePreference
         Assert ($TestResult.FailedCount -eq 0) "One or more tests failed, build will not continue."
     }
     finally {
-        Pop-Location
         Remove-Module $ModuleName
     }
 }
