@@ -1,18 +1,9 @@
 
 Properties {
     
-    if ($BaseVersion -eq $null) {
-        $BaseVersion = "0.1.0"
+    if ($Version -eq $null) {
+        $Version = "0.1.1"
     }
-    
-    if ($BuildNumber -ne $null) {
-        $Version = "$BaseVersion.$BuildNumber"
-    }
-    else {
-        $Version = "$BaseVersion.0"
-    }
-   
-
 
     $SrcDir = "$PSScriptRoot\src"
     $TestDir = "$PSScriptRoot\src"
@@ -81,7 +72,7 @@ Task SetVersion `
     -description "Updates the version of the release module to the specified version" `
     -requiredVariables OutputDir, Version `
 {
-    Write-Host "Version=$Version"
+    Write-Verbose "Setting version to $Version"
     Update-ModuleManifest -Path $OutputDir\Psst.psd1 -ModuleVersion $Version
 }
 
