@@ -1,4 +1,16 @@
-# [0.2.0](https://github.com/cobster/psst/compare/0.1.0...0.2.0) (2016-10-24)
+# [0.2.1](https://github.com/cobster/psst/compare/0.2.1...0.2.0.0) (2016-10-24)
+
+### Bug Fixes
+
+* Fixes comparison link for differencing 0.1.0 to 0.2.0
+* Fixes template expansion in versioned directory within local application data 
+* Fixes `Install` and `Uninstall` build tasks to properly install into local users powershell module path.
+
+### Features
+
+* Outputs test results to 'PesterTestResults' 
+
+# [0.2.0](https://github.com/cobster/psst/compare/0.1.0...0.2.0.0) (2016-10-24)
 
 ### Bug Fixes
 
