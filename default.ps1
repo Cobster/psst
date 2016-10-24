@@ -1,5 +1,18 @@
 
 Properties {
+    
+    if ($BaseVersion -eq $null) {
+        $BaseVersion = "0.1.0"
+    }
+    
+    if ($BuildNumber -ne $null) {
+        $Version = "$BaseVersion.$BuildNumber"
+    }
+    else {
+        $Version = "$BaseVersion.0"
+    }
+   
+
 
     $SrcDir = "$PSScriptRoot\src"
     $TestDir = "$PSScriptRoot\src"
@@ -30,6 +43,10 @@ Properties {
 
 Task default -depends Build
 
+Task Build -depends Init, Clean, BuildImpl, SetVersion, CompressTemplates, Compress
+
+Task release -depends Init, Clean, Test, BuildImpl, CompressTemplates, Compress 
+
 #
 # INIT
 # 
@@ -57,13 +74,23 @@ Task Clean `
     }
 }
 
+#
+# SET VERSION
+# 
+Task SetVersion `
+    -description "Updates the version of the release module to the specified version" `
+    -requiredVariables OutputDir, Version `
+{
+    Write-Host "Version=$Version"
+    Update-ModuleManifest -Path $OutputDir\Psst.psd1 -ModuleVersion $Version
+}
 
 #
 # BUILD
 #
-Task Build `
+Task BuildImpl `
     -description "This copies all the powershell code and scaffolding templates to $OutputDir." `
-    -depends Init, Clean `
+    -requiredVariables Exclude, OutputDir, SrcDir `
 {
     # Copy all the scripts into the release directory
     Copy-Item -Path $SrcDir -Destination $OutputDir -Recurse -Exclude $Exclude -Verbose:$VerbosePreference
@@ -81,7 +108,7 @@ Task Test `
     try {
         Push-Location $TestDir
 
-        $TestResult = Invoke-Pester -PassThru -Verbose:$VerbosePreference
+        $TestResult = Invoke-Pester -Quiet:$Quiet -PassThru -Verbose:$VerbosePreference
 
         Assert ($TestResult.FailedCount -eq 0) "One or more tests failed, build will not continue."
     }
@@ -156,15 +183,30 @@ Task CompressTemplates `
     }
 }
 
+#
+# COMPRESS
+#
+Task Compress `
+    -description "This compresses the release module into a zip file for archival." `
+    -requiredVariables OutputDir, Version `
+    -precondition { 
+        BuildOutputExists 
+    } `
+{
+    Write-Host "$OutputDir-$Version.zip"
+    Compress-Archive $OutputDir -DestinationPath "$OutputDir-$Version.zip" -Verbose:$VerbosePreference
+}
+
+
 
 #
-# IMPORT
+# IMPORT 
 #
 Task "Import" `
     -description "Imports the module under development into the current powershell session" `
     -requiredVariables ModuleName, OutputDir `
 {
-    Assert -conditionToCheck (Test-Path $OutputDir) $NoBuildOutputErrorMessage
+    AssertBuildOutputExists
 
     if ($null -ne (Get-Module -Name $ModuleName)) {
         Write-Host "Removing $ModuleName"
@@ -214,3 +256,5 @@ Task Uninstall `
 function AssertBuildOutputExists { 
     Assert -conditionToCheck (Test-Path $OutputDir) $NoBuildOutputErrorMessage
 }
+
+function BuildOutputExists { Test-Path $OutputDir }
