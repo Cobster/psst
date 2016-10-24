@@ -216,7 +216,7 @@ Task Install `
 {
     AssertBuildOutputExists
 
-    $UserModulePath = "$env:HOME\Documents\WindowsPowerShell\Modules\Psst"
+    $UserModulePath = "$HOME\Documents\WindowsPowerShell\Modules\Psst"
     if (Test-Path $UserModulePath) {
         Write-Host "Removing $UserModulePath"
         Remove-Item $UserModulePath -Force -Recurse
@@ -235,7 +235,7 @@ Task Uninstall `
 {
     AssertBuildOutputExists
 
-    $UserModulePath = "$env:HOME\Documents\WindowsPowerShell\Modules\Psst"
+    $UserModulePath = "$HOME\Documents\WindowsPowerShell\Modules\Psst"
     if (Test-Path $UserModulePath) {
         Write-Host "Removing $UserModulePath"
         Remove-Item $UserModulePath -Force -Recurse
