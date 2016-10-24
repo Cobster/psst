@@ -58,13 +58,7 @@ PowerShellVersion = '5.0'
 # NestedModules = @()
 
 # Functions to export from this module
-FunctionsToExport = @(
-    'Expand-Template',
-    'Expand-TemplateDirectory',
-    'Get-NamingConventions',
-    'New-PsstGenerator',
-    'New-PsstGeneratorModule'
-)
+# FunctionsToExport = @()
 
 # Cmdlets to export from this module
 # CmdletsToExport = '*'
@@ -102,7 +96,7 @@ PrivateData = @{
         # IconUri = ''
 
         # ReleaseNotes of this module
-        # ReleaseNotes = 'https://github.com/Cobster/psst/blob/master/ReleaseNotes.md'
+        ReleaseNotes = 'https://github.com/Cobster/psst/blob/master/ReleaseNotes.md'
 
     } # End of PSData hashtable
 

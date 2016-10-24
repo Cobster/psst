@@ -33,7 +33,6 @@ function New-PsstGeneratorModule
         Name = (Get-NamingConventions $Name)
         TemplateDir = $TemplateDir
         Version = $Version
-        Module = $ModuleData
         Tests = "Tests"
         FullName = (Get-NamingConventions "Psst.$Name")
     }

@@ -12,4 +12,7 @@ $ModuleData = Import-PowerShellDataFile "$PSScriptRoot\psst.psd1"
 . $PSScriptRoot\NewPsstGenerator.ps1
 . $PSScriptRoot\NewPsstGeneratorModule.ps1
 
+#Expand-Archive $PSScriptRoot\PsstGenerator.zip -DestinationPath $PSScriptRoot
+#Expand-Archive $PSScriptRoot\PsstGeneratorModule.zip -DestinationPath $PSScriptRoot
+
 Export-ModuleMember -Function *-* 

@@ -8,16 +8,29 @@ function Expand-TemplateDirectory
         [hashtable] $Model    
     )
 
+    $Model.Psst = Import-PowerShellDataFile "$PSScriptRoot\Psst.psd1"     
+
     # Check to see if the InputPath is a directory 
     if ($false -eq (Test-Path $InputPath -PathType Container)) {
-        # The directory did not exist, so check to see if a zip archive exists
-        if ($false -eq (Test-Path "$InputPath.zip" -PathType Leaf)) {
-            throw [System.IO.DirectoryNotFoundException] "No template directory was found."
-        }
 
-        Write-Verbose "Expanding the template archive $InputPath.zip"
-        # Expand the archive into the modules directory
-        Expand-Archive "$InputPath.zip" -DestinationPath (Split-Path $InputPath -Parent)
+        $ModuleName = Split-Path $PSScriptRoot -Leaf
+        $TemplateName = Split-Path $InputPath -Leaf
+        $LocalAppData = [Environment]::GetFolderPath("LocalApplicationData")
+        $TargetPath = [IO.Path]::Combine($LocalAppData, $ModuleName, $Model.Psst.ModuleVersion)
+
+        # Check to see if the template has already been expanded into the local application data folder
+        if ($false -eq (Test-Path "$TargetPath\$TemplateName" -PathType Container)) {
+            
+            # The directory did not exist, so check to see if a zip archive exists
+            if ($false -eq (Test-Path "$InputPath.zip" -PathType Leaf)) {
+                throw [System.IO.DirectoryNotFoundException] "No template directory was found."
+            }
+
+            Write-Verbose "Expanding the template archive $InputPath.zip to $TargetPath"
+            Expand-Archive "$InputPath.zip" -DestinationPath $TargetPath
+        }
+        
+        $InputPath = "$TargetPath\$TemplateName"
     }
 
     Write-Verbose "Expanding $InputPath to $OutputPath"
