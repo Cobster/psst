@@ -79,5 +79,20 @@ Describe "Expand-TemplateDirectory" {
         "$TestDirectory\sub\message.txt" | Should Not Exist
     }
 
+    It "Should extract the template from a zip archive if directory does not exist" {
+        New-Item "$TestDirectory\Templates" -ItemType Directory
+        Add-Content -Path "$TestDirectory\Templates\message.txt" -Value '$($Model.Message)' -Force
+        Compress-Archive "$TestDirectory\Templates" -DestinationPath "$TestDirectory\Templates.zip"
+        Remove-Item "$TestDirectory\Templates" -Recurse -Force
 
+        $Model = @{
+            Message = "Should see this"
+        }
+
+        Expand-TemplateDirectory -InputPath "$TestDirectory\Templates" -Model $Model
+
+        "$TestDirectory\message.txt" | Should Exist
+        "$TestDirectory\message.txt" | Should Contain "Should see this"
+
+    }
 }

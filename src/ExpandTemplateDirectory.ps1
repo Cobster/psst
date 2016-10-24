@@ -8,6 +8,18 @@ function Expand-TemplateDirectory
         [hashtable] $Model    
     )
 
+    # Check to see if the InputPath is a directory 
+    if ($false -eq (Test-Path $InputPath -PathType Container)) {
+        # The directory did not exist, so check to see if a zip archive exists
+        if ($false -eq (Test-Path "$InputPath.zip" -PathType Leaf)) {
+            throw [System.IO.DirectoryNotFoundException] "No template directory was found."
+        }
+
+        Write-Verbose "Expanding the template archive $InputPath.zip"
+        # Expand the archive into the modules directory
+        Expand-Archive "$InputPath.zip" -DestinationPath (Split-Path $InputPath -Parent)
+    }
+
     Write-Verbose "Expanding $InputPath to $OutputPath"
 
     $Exclude | ForEach-Object { Write-Verbose "Excluding: $_" }
