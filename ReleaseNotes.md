@@ -1,4 +1,23 @@
-# [0.2.1](https://github.com/cobster/psst/compare/0.2.1...0.2.0.0) (2016-10-24)
+# [0.2.2](https://github.com/cobster/psst/compare/0.2.1...0.2.2) (2016-10-24)
+
+### Features
+
+* Adds build script. Can set the version, or a build number.
+* Clean task clears the local application data template cache for the current version.
+* Exposes `Authors` as a configurable setting. 
+* Adds `.gitignore` file to the psst module template.
+
+### Bug Fixes
+
+* Fixes execution problems in psake tasks due to invalid template generation.
+* Pester test results are output to release directory.
+
+### Code Refactoring
+
+* Makes the `Name` parameter first on `New-PsstGeneratorModule`
+* Had to remove the dependency on the `Psst` module from the module templates. 
+
+# [0.2.1](https://github.com/cobster/psst/compare/0.2.0.0...0.2.1) (2016-10-24)
 
 ### Bug Fixes
 

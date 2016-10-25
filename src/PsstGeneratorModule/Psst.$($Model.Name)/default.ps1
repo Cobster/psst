@@ -109,7 +109,7 @@ Task Test ``
     Import-Module Pester
 
     try {
-        `$TestResult = Invoke-Pester -Script `$TestDir -OutputFormat NUnitXml -OutputFile `$TestResults  -PassThru -Verbose:`$VerbosePreference
+        `$TestResult = Invoke-Pester -Script `$TestDir -OutputFormat NUnitXml -OutputFile `$ReleaseDir\`$TestResults  -PassThru -Verbose:`$VerbosePreference
         Assert (`$TestResult.FailedCount -eq 0) `$TestFailureMessage
     }
     finally {
