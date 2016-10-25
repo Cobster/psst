@@ -36,11 +36,11 @@ Describe "New-PsstGeneratorModule" {
         $ModuleData.RootModule | Should BeExactly "Psst.Example.psm1"
     }
 
-    It "Should set the Psst module as a required module" {
-        New-PsstGeneratorModule -name "Example"
-        $ModuleData = Import-PowerShellDataFile -Path "$TestDirectory\Psst.Example\src\Psst.Example.psd1"
-        $ModuleData.RequiredModules[0] -contains 'Psst' | Should Be $true 
-    }
+    # It "Should set the Psst module as a required module" {
+    #     New-PsstGeneratorModule -name "Example"
+    #     $ModuleData = Import-PowerShellDataFile -Path "$TestDirectory\Psst.Example\src\Psst.Example.psd1"
+    #     $ModuleData.RequiredModules -contains 'Psst' | Should Be $true 
+    # }
 
     It "Should set the ModuleVersion to 1.0.0 by default" {
         New-PsstGeneratorModule -name "Example"

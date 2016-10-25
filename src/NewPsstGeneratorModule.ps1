@@ -17,11 +17,9 @@ function New-PsstGeneratorModule
 
     [CmdletBinding()]
     param (
-        [string] $OutputPath = $PWD,
-
         [string] $Name,
 
-        [string] $GitRepository, 
+        [string] $OutputPath = $PWD,
 
         [string] $Version = '1.0.0'
     )

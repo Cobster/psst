@@ -17,9 +17,11 @@ Properties {
     $OutputDir = "$ReleaseDir\$ModuleName"
     $Exclude = @("*.Tests.ps1")
 
+    $TemplateCache = "$env:LOCALAPPDATA\$ModuleName\$Version"
+
     $ReleaseNotes = "https://github.com/Cobster/psst/blob/master/ReleaseNotes.md"
 
-    $SettingsPath = "$env:LOCALAPPDATA\Psst\SecuredBuildSettings.clixml"
+    $SettingsPath = "$env:LOCALAPPDATA\$ModuleName\SecuredBuildSettings.clixml"
 
     $NoBuildOutputErrorMessage = "There is no build output. Run psake build."
     $CodeCoverage = $true
@@ -30,9 +32,7 @@ Properties {
 
 }
 
-
 . $PSScriptRoot\build-publishing.ps1
-. $PSScriptRoot\build-settings.ps1
 
 Task default -depends Build
 
@@ -56,12 +56,17 @@ Task Init `
 # CLEAN
 #
 Task Clean `
-    -description "Deletes the contents of the release directory." `
+    -description "Deletes the contents of the release directory and associated template cache." `
     -requiredVariables ReleaseDir `
 {
 
     if ((Test-Path $ReleaseDir) -and $ReleaseDir.StartsWith($PSScriptRoot, 'OrdinalIgnoreCase')) {
         Get-ChildItem $ReleaseDir | Remove-Item -Recurse -Force -Verbose:$VerbosePreference
+    }
+
+    if ((Test-Path $TemplateCache)) {
+        Write-Verbose "Deleting template cache at $TemplateCache"
+        Remove-Item $TemplateCache -Recurse -Force
     }
 }
 
@@ -99,7 +104,7 @@ Task Test `
     Import-Module Pester
 
     try {
-        $TestResult = Invoke-Pester -Script $TestDir -OutputFormat NUnitXml -OutputFile PesterTestResults.xml -Quiet:$Quiet -PassThru -Verbose:$VerbosePreference
+        $TestResult = Invoke-Pester -Script $TestDir -OutputFormat NUnitXml -OutputFile $ReleaseDir\PesterTestResults.xml -Quiet:$Quiet -PassThru -Verbose:$VerbosePreference
         Assert ($TestResult.FailedCount -eq 0) "One or more tests failed, build will not continue."
     }
     finally {
@@ -110,6 +115,7 @@ Task Test `
 Task Publish `
     -description "Publishes the module to PowerShellGallery." `
     -requiredVariables SettingsPath, OutputDir `
+    -precondition { BuildOutputExists } `
 {
     $publishParams = @{
         Path        = $OutputDir
@@ -178,15 +184,11 @@ Task CompressTemplates `
 Task Compress `
     -description "This compresses the release module into a zip file for archival." `
     -requiredVariables OutputDir, Version `
-    -precondition { 
-        BuildOutputExists 
-    } `
+    -precondition { BuildOutputExists } `
 {
     Write-Host "$OutputDir-$Version.zip"
     Compress-Archive $OutputDir -DestinationPath "$OutputDir-$Version.zip" -Verbose:$VerbosePreference
 }
-
-
 
 #
 # IMPORT 
@@ -194,9 +196,8 @@ Task Compress `
 Task "Import" `
     -description "Imports the module under development into the current powershell session" `
     -requiredVariables ModuleName, OutputDir `
+    -precondition { BuildOutputExists } `
 {
-    AssertBuildOutputExists
-
     if ($null -ne (Get-Module -Name $ModuleName)) {
         Write-Host "Removing $ModuleName"
         Remove-Module $ModuleName
@@ -213,9 +214,8 @@ Task "Import" `
 Task Install `
     -description "Copies the release module into the current users PowerShell module path." `
     -requiredVariables ModuleName, OutputDir `
+    -precondition { BuildOutputExists } `
 {
-    AssertBuildOutputExists
-
     $UserModulePath = "$HOME\Documents\WindowsPowerShell\Modules\Psst"
     if (Test-Path $UserModulePath) {
         Write-Host "Removing $UserModulePath"
@@ -232,18 +232,13 @@ Task Install `
 Task Uninstall `
     -description "Removes the module from the current users PowerShell module path." `
     -requiredVariables ModuleName, OutputDir `
+    -precondition { BuildOutputExists } `
 {
-    AssertBuildOutputExists
-
     $UserModulePath = "$HOME\Documents\WindowsPowerShell\Modules\Psst"
     if (Test-Path $UserModulePath) {
         Write-Host "Removing $UserModulePath"
         Remove-Item $UserModulePath -Force -Recurse
     }
-}
-
-function AssertBuildOutputExists { 
-    Assert -conditionToCheck (Test-Path $OutputDir) $NoBuildOutputErrorMessage
 }
 
 function BuildOutputExists { Test-Path $OutputDir }

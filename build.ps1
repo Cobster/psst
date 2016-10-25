@@ -1,7 +1,7 @@
 # Must import the psake powershell module
 
 param (
-    $Version,
+    $Version = (Get-Content $PSScriptRoot\version),
     $BuildNumber
 )
 
