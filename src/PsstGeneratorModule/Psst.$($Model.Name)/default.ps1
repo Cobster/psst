@@ -6,22 +6,19 @@ This is a psake build automation script.
 #>
 
 Properties {
-
-    if (`$Version -eq `$null) {
-        `$Version = "1.0.0"
-    }
+    `$Authors = "`$env:USERNAME","and contributors"
 
     `$SrcDir = "`$PSScriptRoot\src"
     `$TestDir = "`$PSScriptRoot"
-    `$TestResults = "PestTestResults.xml"
+    `$TestResults = "PesterTestResults.xml"
 
     # This should match the name of the PSD1 file for the module.
     `$ModuleName = Get-Item `$SrcDir/*.psd1 |
         Where-Object { `$null -ne (Test-ModuleManifest -Path `$_ -ErrorAction SilentlyContinue )} |
         Select-Object -First 1 -ExpandProperty BaseName
 
-    `$ReleaseDir = "`$PSScriptRoot/release"
-    `$OutputDir = "`$ReleaseDir/`$ModuleName"
+    `$ReleaseDir = "`$PSScriptRoot\release"
+    `$OutputDir = "`$ReleaseDir\`$ModuleName"
     `$Exclude = @("*.Tests.ps1")
 
     `$TemplateCache = "`$env:LOCALAPPDATA\$($Model.FullName)\`$Version"
@@ -62,12 +59,15 @@ Task Clean ``
     -description "Deletes the contents of the release directory." ``
     -requiredVariables ReleaseDir, TemplateCache ``
 {
-    if ((Test-Path `$ReleaseDir) -and `$ReleaseDir.StartsWith(`$PSScriptRoot, 'OrdinalIgnoreCase')) {
-        Get-ChildItem `$ReleaseDir | Remove-Item -Recurse -Force -Verbose:`$VerbosePreference
+    if (Test-Path `$ReleaseDir) {
+        Remove-Item `$ReleaseDir -Force -Recurse -Verbose:`$VerbosePreference 
     }
+    # if ((Test-Path `$ReleaseDir) -and `$ReleaseDir.StartsWith(`$PSScriptRoot, 'OrdinalIgnoreCase')) {
+    #     Get-ChildItem `$ReleaseDir | Remove-Item -Recurse -Force -Verbose:`$VerbosePreference
+    #}
 
     if ((Test-Path `$TemplateCache)) {
-        Write-Verbose "Deleting template cache at `$TemplateCache"
+        Write-Host "Deleting template cache at `$TemplateCache"
         Remove-Item `$TemplateCache -Force
     }
 }
@@ -80,9 +80,10 @@ Task UpdateModuleManifest ``
     -requiredVariables OutputDir, ReleaseNotes, Version ``
 {
     Write-Verbose "Setting version to `$Version"
-    Update-ModuleManifest -Path `$OutputDir\$($Module.FullName).psd1 ``
+    Update-ModuleManifest -Path `$OutputDir\`$ModuleName.psd1 ``
         -ModuleVersion `$Version ``
-        -ReleaseNotes `$ReleaseNotes
+        -ReleaseNotes `$ReleaseNotes ``
+        -Author ([string]::Join(", ", `$Authors))
 }
 
 
@@ -91,7 +92,7 @@ Task UpdateModuleManifest ``
 #
 Task BuildImpl ``
     -description "This copies all the powershell code and scaffolding templates to the ```$OutputDir." ``
-    -depends Init, Clean ``
+    -requiredVariables OutputDir, SrcDir, Exclude ``
 {
     # Copy all the scripts into the release directory
     Copy-Item -Path `$SrcDir -Destination `$OutputDir -Recurse -Exclude `$Exclude -Verbose:`$VerbosePreference
@@ -117,9 +118,9 @@ Task Test ``
     }
 }
 
-Task Publish `
-    -description "Publishes the module to PowerShellGallery." `
-    -requiredVariables SettingsPath, OutputDir `
+Task Publish ``
+    -description "Publishes the module to PowerShellGallery." ``
+    -requiredVariables SettingsPath, OutputDir ``
 {
     `$publishParams = @{
         Path        = `$OutputDir
@@ -221,7 +222,7 @@ Task Install ``
     -requiredVariables ModuleName, OutputDir ``
     -precondition { BuildOutputExists } ``
 {
-    `$UserModulePath = "`$HOME\Documents\WindowsPowerShell\Modules\$($Model.FullName)"
+    `$UserModulePath = "`$HOME\Documents\WindowsPowerShell\Modules\`$ModuleName"
     if (Test-Path `$UserModulePath) {
         Write-Host "Removing `$UserModulePath"
         Remove-Item `$UserModulePath -Force -Recurse
@@ -239,7 +240,7 @@ Task Uninstall ``
     -requiredVariables ModuleName, OutputDir ``
     -precondition { BuildOutputExists } ``
 {
-    `$UserModulePath = "`$HOME\Documents\WindowsPowerShell\Modules\$($Model.FullName)"
+    `$UserModulePath = "`$HOME\Documents\WindowsPowerShell\Modules\`$ModuleName"
     if (Test-Path `$UserModulePath) {
         Write-Host "Removing `$UserModulePath"
         Remove-Item `$UserModulePath -Force -Recurse

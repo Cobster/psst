@@ -18,6 +18,7 @@ function PromptUserForCredentialAndStorePassword {
     if (`$DestinationPath) {
         SetSetting -Key `$Key -Value `$cred.Password -Path `$DestinationPath
     }
+    return `$cred
 }
 
 Task RemoveApiKey -requiredVariables SettingsPath {
