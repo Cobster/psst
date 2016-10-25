@@ -66,7 +66,7 @@ Task Clean `
 
     if ((Test-Path $TemplateCache)) {
         Write-Verbose "Deleting template cache at $TemplateCache"
-        Remove-Item $TemplateCache -Force
+        Remove-Item $TemplateCache -Recurse -Force
     }
 }
 
