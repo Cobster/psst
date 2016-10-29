@@ -21,7 +21,7 @@ function New-PsstGeneratorModule
 
         [string] $OutputPath = $PWD,
 
-        [string] $Version = '1.0.0'
+        [string] $Version = '0.0.0'
     )
 
     $TemplateDir = "$PSScriptRoot\PsstGeneratorModule"
