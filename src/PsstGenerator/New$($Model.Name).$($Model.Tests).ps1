@@ -23,6 +23,6 @@ Describe "New-$($Model.Name.UpperCamelCase)" {
 
     It "Should be dot sourced in the module file" {
         `$ModulePath = Get-ChildItem "`$here\*.psm1" | Select-Object -First 1
-        "`$(`$ModulePath.FullName)" | Should Contain "\. \```$PSScriptRoot\\NewPsstGeneratorModule\.ps1"
+        "`$(`$ModulePath.FullName)" | Should Contain "\. \```$PSScriptRoot\\New$($Model.Name.UpperCamelCase)\.ps1"
     }
 }

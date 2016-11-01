@@ -65,7 +65,6 @@ Describe "New-PsstGeneratorModule" {
             "$TestDirectory\Psst.Example\psake\compress-templates.task.ps1",
             "$TestDirectory\Psst.Example\psake\conditions.ps1",
             "$TestDirectory\Psst.Example\psake\default.task.ps1",
-            "$TestDirectory\Psst.Example\psake\import.task.ps1",
             "$TestDirectory\Psst.Example\psake\init.task.ps1",
             "$TestDirectory\Psst.Example\psake\install.task.ps1",
             "$TestDirectory\Psst.Example\psake\publish.task.ps1",

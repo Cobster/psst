@@ -5,8 +5,11 @@ $sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path) -replace '\.Tests\.', '.'
 Import-Module $here\Psst.psd1
 
 Describe "New-PsstGenerator" {
-    $TestDirectory = [IO.Path]::Combine([IO.Path]::GetTempPath(), [IO.Path]::GetRandomFileName())
 
+    BeforeAll {
+        $TestDirectory = [IO.Path]::Combine([IO.Path]::GetTempPath(), [IO.Path]::GetRandomFileName())
+    }
+    
     BeforeEach {
         New-Item $TestDirectory -ItemType Directory
         Push-Location $TestDirectory
