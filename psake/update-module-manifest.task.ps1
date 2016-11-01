@@ -9,9 +9,13 @@ Task UpdateModuleManifest `
         $Version = "0.0.0.0"
     }
     
-    Write-Verbose "Setting version to $Version"
+    $Author = [string]::Join(", ", $Authors)
+
+    Write-Host "Setting version to $Version"
+    Write-Host "Setting release notes uri to $ReleaseNotes"
+    Write-Host "Setting author to $Author"
     Update-ModuleManifest -Path $OutputDir\$ModuleName.psd1 `
         -ModuleVersion $Version `
         -ReleaseNotes $ReleaseNotes `
-        -Author ([string]::Join(", ", $Authors))
+        -Author $Author
 }

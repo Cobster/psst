@@ -13,6 +13,6 @@ Task Test ``
     }
     finally {
         Pop-Location
-        Remove-Module `$ModuleName 
+        Remove-Module `$ModuleName -ErrorAction SilentlyContinue
     }
 }

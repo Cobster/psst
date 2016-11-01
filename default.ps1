@@ -1,6 +1,11 @@
 
 Properties {
     
+    if ([string]::IsNullOrWhitespace($Version)) {
+        $Version = "0.0.0"
+    }
+
+
     $ModuleName = "Psst"
     $Authors = "Jake Bruun"
 
@@ -13,6 +18,10 @@ Properties {
     $ReleaseDir = "$ProjectDir\bin\release"
     $OutputDir = "$ReleaseDir\$ModuleName"
 
+    
+
+    $ExamplesDir = "$ReleaseDir\examples"
+
     $Exclude = @("*.Tests.ps1")
 
     $TemplateCache = "$env:LOCALAPPDATA\$ModuleName\$Version"
@@ -24,13 +33,24 @@ Properties {
     $NoBuildOutputErrorMessage = "There is no build output. Run psake build."
     $CodeCoverage = $true
 
+    # Git 
+
+    $GitLastCommit = git rev-parse HEAD
+    $GitHash = $GitLastCommit.Substring(0,7)
+
     # Publishing
     $NuGetApiKey = $null
     $PublishRepository = $null
+    
+    
+    # Define the options for artifact archival
 
-    if ([string]::IsNullOrWhitespace($Version)) {
-        $Version = "0.0.0"
+    $ZipArtifactsOptions = @{
+        InputFilePath = @("$OutputDir","$ReleaseDir\$TestResults")
+        OutputFilePath = "$ReleaseDir"
+        OutputFileFormat = "$ModuleName-$Version-$GitHash.zip"
     }
+
 }
 
 . $PSScriptRoot\psake\tasks.ps1

@@ -5,6 +5,7 @@ Task Init `
     -postcondition { Test-Path $OutputDir } `
 { 
     if (-not (Test-Path $OutputDir)) {
+        Write-Host "Creating: $OutputDir"
         New-Item $OutputDir -ItemType Directory -Verbose:$VerbosePreference | Out-Null
     }
 }

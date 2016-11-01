@@ -1,11 +1,13 @@
 #
-# COMPRESS
+# Zip Artifacts
 #
 Task ZipArtifacts `
     -description "This compresses the release module into a zip file for archival." `
     -requiredVariables OutputDir, Version `
     -precondition { BuildOutputExists } `
 {
-    Write-Verbose "$OutputDir-$Version.zip"
-    Compress-Archive $OutputDir -DestinationPath "$OutputDir-$Version.zip" -Verbose:$VerbosePreference
+    #Write-Verbose "Compressing $ZipArtifactsOptions.InputPath $($ZipArtifactsOptions.OutputFileFormats)"
+
+    $ZipArtifactsOptions.InputFilePath | Compress-Archive -DestinationPath "$($ZipArtifactsOptions.OutputFilePath)\$($ZipArtifactsOptions.OutputFileFormat)" -Verbose:$VerbosePreference -Update
+    
 }

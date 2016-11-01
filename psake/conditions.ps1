@@ -12,3 +12,8 @@ function TemplateCacheDirIsDeleted
 {
     -not (Test-Path $TemplateCache)
 }
+
+function ModuleIsImported 
+{
+    Get-Module $ModuleName -ne $null
+}

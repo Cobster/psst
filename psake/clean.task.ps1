@@ -7,10 +7,19 @@ Task Clean `
     -postcondition { ReleaseDirIsEmpty -and TemplateCacheDirIsDeleted } `
 {
     if (Test-Path $ReleaseDir) { 
-        Get-ChildItem $ReleaseDir | Remove-Item -Recurse -Force -Verbose:$VerbosePreference
+        Get-ChildItem $ReleaseDir | ForEach-Object {
+            Write-Host "Removing: $($_.FullName)"
+            Remove-Item -Path $_.FullName -Recurse -Force -Verbose:$VerbosePreference
+        }
     }
+    
+    if (Get-Module -Name $ModuleName) {
+        Write-Host "Removing module: $ModuleName"
+        Remove-Module Psst    
+    }
+
     if (Test-Path $TemplateCache) {
-        Write-Host "Deleting template cache at $TemplateCache"
+        Write-Host "Removing template cache: $TemplateCache"
         Remove-Item $TemplateCache -Force -Recurse
     }
 }

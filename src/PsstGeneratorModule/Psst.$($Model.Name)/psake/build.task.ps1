@@ -1,1 +1,1 @@
-Task Build -depends Init, Clean, BuildImpl, UpdateModuleManifest, CompressTemplates, ZipArtifacts
+Task Build -depends Init, Clean, Test, BuildImpl, UpdateModuleManifest, CompressTemplates, ZipArtifacts, Import
