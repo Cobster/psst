@@ -44,8 +44,9 @@ function Expand-TemplateDirectory
     Get-ChildItem -Path $InputPath -File | ForEach-Object {
 
         if (-not ($Exclude -contains $_.FullName)) {
+
             # Expand the file name
-            $FileName = Expand-Template -Template $_.Name -Model $Model
+            $FileName = Expand-Template -Template ([Uri]::UnescapeDataString($_.Name)) -Model $Model
             $FilePath = "$OutputPath\$FileName"
 
             Write-Verbose "Expanding $($_.FullName) to $FilePath"
@@ -59,7 +60,7 @@ function Expand-TemplateDirectory
     Get-ChildItem -Path $InputPath -Directory | ForEach-Object {
 
         # Expand the directory name
-        $DirectoryName = Expand-Template -Template $_.Name -Model $Model
+        $DirectoryName = Expand-Template -Template ([Uri]::UnescapeDataString($_.Name)) -Model $Model
         $DirectoryPath = "$OutputPath\$DirectoryName"
         
         Write-Verbose "Creating $DirectoryPath"

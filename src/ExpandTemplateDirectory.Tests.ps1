@@ -95,4 +95,20 @@ Describe "Expand-TemplateDirectory" {
         "$TestDirectory\message.txt" | Should Contain "Should see this"
 
     }
+
+    It "Should url decode template file and directory names before expanding" {
+
+        New-Item "$TestDirectory\Templates" -ItemType Directory
+        New-Item "$TestDirectory\Templates\%24(%24Model.DirName)\%24(%24Model.FileName)" -ItemType File -Force
+
+        $Model = @{
+            DirName = "Bar"
+            FileName = "Woot.txt"
+        }
+
+        Expand-TemplateDirectory -InputPath "$TestDirectory\Templates" -Model $Model
+
+        "$TestDirectory\Bar\Woot.txt" | Should Exist
+
+    }
 }
