@@ -4,8 +4,15 @@ Psst is a template-based file generator written in PowerShell.  Its purpose is t
 create files from templates for any development language.  Generated files are created 
 using predefined templates that use PowerShell's string replacement/interpolation syntax.
 
+Installing Psst is a piece of cake.  Open PowerShell as an administrator and 
+run the following command to download and install Psst.
+
+```
+PS> Install-Module Psst
+```
+
 Psst provides two useful functions that will jump start your ability to create your own
-template generators and template generator modules. 
+modules and templates.
 
 ```
 New-PsstGeneratorModule -Name Angular2
@@ -19,7 +26,7 @@ New-PsstGenerator -Name Feature
 
 ## Maintainers
 
-- [Jacob Bruun](https://github.com/cobster) - [Automate all the things](http://jacobbruun.com)
+- [Jacob Bruun](https://github.com/cobster)
 
 ## License
 
