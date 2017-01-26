@@ -6,7 +6,7 @@
 # encoding of the file names during publishing.
 #
 # If you have a templatized file name .ts it will be encoded to %24(%24Model.Name.KebabCase).ts  
-Task CompressTemplates `
+Task 'compress-templates' `
     -description "This compresses each of the templates in the build output into a zip archive and removes." `
     -requiredVariables OutputDir `
     -precondition { Test-Path $OutputDir } `

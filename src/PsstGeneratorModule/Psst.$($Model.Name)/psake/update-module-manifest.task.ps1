@@ -1,7 +1,7 @@
 #
 # UPDATE MODULE MANIFEST
 # 
-Task UpdateModuleManifest ``
+Task 'update-module-manifest' ``
     -description "Updates the module manifest file; sets the correct build number and updates other metadata." ``
     -requiredVariables OutputDir, ReleaseNotes, Version ``
 {

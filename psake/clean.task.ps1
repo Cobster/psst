@@ -1,7 +1,7 @@
 #
 # CLEAN
 #
-Task Clean `
+Task 'clean' `
     -description "Deletes the contents of the release directory and template cache." `
     -requiredVariables ReleaseDir, TemplateCache `
     -postcondition { ReleaseDirIsEmpty -and TemplateCacheDirIsDeleted } `

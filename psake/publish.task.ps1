@@ -1,4 +1,4 @@
-Task Publish `
+Task 'publish' `
     -description "Publishes the module to PowerShellGallery." `
     -requiredVariables SettingsPath, OutputDir `
 {

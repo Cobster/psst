@@ -1,7 +1,7 @@
 #
 # CLEAN
 #
-Task Clean ``
+Task 'clean' ``
     -description "Deletes the contents of the release directory." ``
     -requiredVariables ReleaseDir, TemplateCache ``
 {

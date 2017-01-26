@@ -1,4 +1,4 @@
-Task StoreApiKey -requiredVariables SettingsPath {
+Task 'store-api-key' -requiredVariables SettingsPath {
     $promptForKeyCredParams = @{
         DestinationPath = $SettingsPath
         Message         = 'Enter your NuGet API key in the password field'

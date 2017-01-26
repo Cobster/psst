@@ -1,7 +1,7 @@
 #
 # INSTALL
 # 
-Task Install `
+Task 'install' `
     -description "Copies the release module into the current users PowerShell module path." `
     -requiredVariables ModuleName, OutputDir `
     -precondition { BuildOutputExists } `

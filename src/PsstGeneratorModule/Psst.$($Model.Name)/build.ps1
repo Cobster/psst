@@ -1,7 +1,7 @@
 # Must import the psake powershell module
 
 param (
-    `$Version = "0.0.0",
+    `$Version = "$Version",
     `$BuildNumber
 )
 

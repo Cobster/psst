@@ -1,7 +1,7 @@
 #
 # INIT
 # 
-Task Init ``
+Task 'init' ``
     -description "Creates the release directory if it doesn't already exist." ``
     -RequiredVariable OutputDir ``
 { 

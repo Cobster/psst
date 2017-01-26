@@ -1,4 +1,4 @@
-Task Import `
+Task 'import' `
     -description "Imports the module from the build output directory." `
     -precondition { BuildOutputExists } `
 {

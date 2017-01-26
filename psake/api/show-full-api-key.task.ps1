@@ -1,4 +1,4 @@
-Task ShowFullApiKey -requiredVariables SettingsPath {
+Task 'show-full-api-key' -requiredVariables SettingsPath {
     if ($NuGetApiKey) {
         "The embedded NuGetApiKey is: $NuGetApiKey"
     }

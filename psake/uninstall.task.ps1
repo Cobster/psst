@@ -1,7 +1,7 @@
 #
 # UNINSTALL
 #
-Task Uninstall `
+Task 'uninstall' `
     -description "Removes the module from the current users PowerShell module path." `
     -requiredVariables ModuleName, OutputDir `
     -precondition { BuildOutputExists } `

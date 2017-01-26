@@ -1,5 +1,5 @@
 
-Task Init `
+Task 'init' `
     -description "Creates the release directory if it doesn't already exist." `
     -requiredVariable OutputDir, ProjectDir `
     -postcondition { Test-Path $OutputDir } `

@@ -1,7 +1,7 @@
 #
 # BUILD
 #
-Task BuildImpl `
+Task 'build-impl' `
     -description "This copies all the powershell code and scaffolding templates to the `$OutputDir." `
     -requiredVariables OutputDir, SrcDir, Exclude `
 {

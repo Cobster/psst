@@ -1,1 +1,1 @@
-Task default -depends Build
+Task default -depends 'build'

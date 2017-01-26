@@ -1,7 +1,7 @@
 #
 # TEST
 #
-Task Test `
+Task 'test' `
     -description "This runs the Pester unit tests." `
     -requiredVariables TestDir, TestResults, ModuleName `
 {
