@@ -1,5 +1,5 @@
 Task 'show-api-key' -requiredVariables SettingsPath {
-    $OFS = ""
+    
     if ($NuGetApiKey) {
         "The embedded (partial) NuGetApiKey is: $($NuGetApiKey[0..7])"
     }
@@ -11,5 +11,5 @@ Task 'show-api-key' -requiredVariables SettingsPath {
         return
     }
 
-    "To see the full key, use the task 'ShowFullApiKey'"
+    "To see the full key, use the task 'show-full-api-key'"
 }
