@@ -1,5 +1,5 @@
 
-function New-PsstGenerator 
+function Invoke-PsstGenerator 
 {
 <#
 

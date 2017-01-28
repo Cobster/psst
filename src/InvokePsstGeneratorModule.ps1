@@ -1,4 +1,4 @@
-function New-PsstGeneratorModule 
+function Invoke-PsstGeneratorModule 
 {
 <#
 
