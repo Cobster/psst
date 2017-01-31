@@ -9,7 +9,7 @@ $ModuleData = Import-PowerShellDataFile "$PSScriptRoot\psst.psd1"
 . $PSScriptRoot\ExpandTemplate.ps1
 . $PSScriptRoot\ExpandTemplateDirectory.ps1
 
-. $PSScriptRoot\InvokePsstGenerator.ps1
-. $PSScriptRoot\InvokePsstGeneratorModule.ps1
+. $PSScriptRoot\NewPsstGenerator.ps1
+. $PSScriptRoot\NewPsstGeneratorModule.ps1
 
 Export-ModuleMember -Function *-* 

@@ -2,7 +2,7 @@ $here = Split-Path -Parent $MyInvocation.MyCommand.Path
 $sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path) -replace '\.Tests\.', '.'
 . "$here\$sut"
 
-Describe "Invoke-PsstGeneratorModule" {
+Describe "New-PsstGeneratorModule" {
     $TestDirectory = [IO.Path]::Combine([IO.Path]::GetTempPath(), [IO.Path]::GetRandomFileName())
 
     BeforeEach {
@@ -17,11 +17,11 @@ Describe "Invoke-PsstGeneratorModule" {
 
     It "Should be dot sourced in the module file" {
         $ModulePath = Get-ChildItem "$here\*.psm1" | Select-Object -First 1
-        "$($ModulePath.FullName)" | Should Contain "\. \`$PSScriptRoot\\InvokePsstGeneratorModule\.ps1"
+        "$($ModulePath.FullName)" | Should Contain "\. \`$PSScriptRoot\\NewPsstGeneratorModule\.ps1"
     }
 
     It "Should set the module script as the Root Module" {
-        Invoke-PsstGeneratorModule -name "Example"
+        New-PsstGeneratorModule -name "Example"
         $ModuleData = Import-PowerShellDataFile -Path "$TestDirectory\Psst.Example\src\Psst.Example.psd1"
         $ModuleData.RootModule | Should BeExactly "Psst.Example.psm1"
     }
@@ -33,24 +33,24 @@ Describe "Invoke-PsstGeneratorModule" {
     # }
 
     It "Should set the ModuleVersion to 0.0.0 by default" {
-        Invoke-PsstGeneratorModule -name "Example"
+        New-PsstGeneratorModule -name "Example"
         $ModuleData = Import-PowerShellDataFile -Path "$TestDirectory\Psst.Example\src\Psst.Example.psd1"
         $ModuleData.ModuleVersion | Should Be '0.0.0'
     }
 
     It "Should set the ModuleVersion to the version specified at the command line" {
-        Invoke-PsstGeneratorModule -Name "Example" -Version '1.1.0'
+        New-PsstGeneratorModule -Name "Example" -Version '1.1.0'
         $ModuleData = Import-PowerShellDataFile -Path "$TestDirectory\Psst.Example\src\Psst.Example.psd1"
         $ModuleData.ModuleVersion | Should Be '1.1.0'
     }
 
     It "Should define the `$ModuleData parameter in the module" {
-        Invoke-PsstGeneratorModule -name "Example"
+        New-PsstGeneratorModule -name "Example"
         "$TestDirectory\Psst.Example\src\Psst.Example.psm1" | Should Contain "\`$ModuleData = Import\-PowerShellDataFile \`"\`$PSScriptRoot\\Psst\.Example\.psd1\`""
     }
 
     It "Should create this directory structure" {
-        Invoke-PsstGeneratorModule -Name "Example"
+        New-PsstGeneratorModule -Name "Example"
 
         @(
             "$TestDirectory\Psst.Example\",

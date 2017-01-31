@@ -1,4 +1,4 @@
-function Invoke-PsstGeneratorModule 
+function New-PsstGeneratorModule 
 {
 <#
 
@@ -26,6 +26,12 @@ function Invoke-PsstGeneratorModule
 
     $TemplateDir = "$PSScriptRoot\PsstGeneratorModule"
     
+    # Resolve the specified output path and create it if necessary
+    $OutputPath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($OutputPath)
+    if (-not (Test-Path $OutputPath)) {
+        New-Item $OutputPath -ItemType Directory -Force
+    }
+
     # Build the model
     $Model = @{
         Name = (Get-NamingConventions $Name)

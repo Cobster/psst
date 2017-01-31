@@ -1,5 +1,5 @@
 
-function Invoke-PsstGenerator 
+function New-PsstGenerator 
 {
 <#
 
@@ -18,10 +18,17 @@ function Invoke-PsstGenerator
     [CmdletBinding()]
     param (
         [string] $Name,
+        [string] $TemplatePath,
         [string] $OutputPath = $PWD
     )
 
     $TemplateDir = "$PSScriptRoot\PsstGenerator"
+
+    # Resolve the specified output path and create it if necessary
+    $OutputPath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($OutputPath)
+    if (-not (Test-Path $OutputPath)) {
+        New-Item $OutputPath -ItemType Directory -Force
+    }
 
     # Build the model
     $Model = @{
@@ -37,4 +44,16 @@ function Invoke-PsstGenerator
     $Excludes += '$($Model.Name)\.exclude'
 
     Expand-TemplateDirectory -InputPath $TemplateDir -OutputPath $OutputPath -Model $Model -Exclude $Excludes 
+
+    if (-not ([string]::IsNullOrWhiteSpace($TemplatePath)) -and (Test-Path -Path $TemplatePath))
+    {
+        Write-Verbose "Copying template from $TemplatePath"
+        Get-ChildItem -Path $TemplatePath | ForEach-Object {
+            Copy-Item -Path $_.FullName -Destination "$OutputPath\$($Model.Name)" -Recurse
+        }
+
+        Get-ChildItem -Path "$OutputPath\$($Model.Name)" -File -Recurse | ForEach-Object {
+            (Get-Content $_.FullName -Raw) -replace '\$', '`$' | Set-Content $_.FullName
+        }
+    }
 }

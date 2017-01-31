@@ -1,3 +1,13 @@
+# [0.2.3](https://github.com/cobster/psst/compare/0.2.2...0.2.3) (2017-01-30)
+
+### Features
+
+* Adds -TemplatePath to New-PsstGenerator which recursively copies all the files into the generators template directory.
+
+### Bug Fixes 
+* Files marked for exclusion are no longer generated during expansion.
+* Expands templates correctly when given a relative output path.
+
 # [0.2.2](https://github.com/cobster/psst/compare/0.2.1...0.2.2) (2016-10-24)
 
 ### Features
