@@ -13,6 +13,7 @@ function Expand-TemplateDirectory
     # Check to see if the InputPath is a directory 
     if ($false -eq (Test-Path $InputPath -PathType Container)) {
 
+        # Look for the 
         $ModuleName = Get-Item $PSScriptRoot\*.psd1 | 
             Where-Object { $null -ne (Test-ModuleManifest -Path $_ -ErrorAction SilentlyContinue) } |
             Select-Object -First 1 -ExpandProperty BaseName 
@@ -36,6 +37,15 @@ function Expand-TemplateDirectory
         $InputPath = "$TargetPath\$TemplateName"
     }
 
+    # Root each path in the exclusion list to the template directories input path
+    $Exclude = $Exclude | ForEach-Object { 
+        if ([IO.Path]::IsPathRooted($_)) {
+            $_
+        } else {
+            "$InputPath\$_"
+        }
+    }
+    
     Write-Verbose "Expanding $InputPath to $OutputPath"
 
     $Exclude | ForEach-Object { Write-Verbose "Excluding: $_" }
@@ -44,8 +54,9 @@ function Expand-TemplateDirectory
     Get-ChildItem -Path $InputPath -File | ForEach-Object {
 
         if (-not ($Exclude -contains $_.FullName)) {
+
             # Expand the file name
-            $FileName = Expand-Template -Template $_.Name -Model $Model
+            $FileName = Expand-Template -Template ([Uri]::UnescapeDataString($_.Name)) -Model $Model
             $FilePath = "$OutputPath\$FileName"
 
             Write-Verbose "Expanding $($_.FullName) to $FilePath"
@@ -59,7 +70,7 @@ function Expand-TemplateDirectory
     Get-ChildItem -Path $InputPath -Directory | ForEach-Object {
 
         # Expand the directory name
-        $DirectoryName = Expand-Template -Template $_.Name -Model $Model
+        $DirectoryName = Expand-Template -Template ([Uri]::UnescapeDataString($_.Name)) -Model $Model
         $DirectoryPath = "$OutputPath\$DirectoryName"
         
         Write-Verbose "Creating $DirectoryPath"

@@ -14,10 +14,16 @@ function New-$($Model.Name.UpperCamelCase)
 
     [CmdletBinding()]
     param (
-        [System.Management.Automation.PathInfo] `$OutputPath = `$PWD
+        [string] `$OutputPath = `$PWD
     )
 
     `$TemplateDir = "`$PSScriptRoot\$($Model.Name)"
+
+    # Resolve the specified output path and create it if necessary
+    `$OutputPath = `$ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath(`$OutputPath)
+    if (-not (Test-Path `$OutputPath)) {
+        New-Item `$OutputPath -ItemType Directory -Force
+    }
 
     # Build the model
     `$Model = @{

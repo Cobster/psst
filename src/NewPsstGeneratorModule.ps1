@@ -21,11 +21,17 @@ function New-PsstGeneratorModule
 
         [string] $OutputPath = $PWD,
 
-        [string] $Version = '1.0.0'
+        [string] $Version = '0.0.0'
     )
 
     $TemplateDir = "$PSScriptRoot\PsstGeneratorModule"
     
+    # Resolve the specified output path and create it if necessary
+    $OutputPath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($OutputPath)
+    if (-not (Test-Path $OutputPath)) {
+        New-Item $OutputPath -ItemType Directory -Force
+    }
+
     # Build the model
     $Model = @{
         Name = (Get-NamingConventions $Name)
@@ -38,6 +44,6 @@ function New-PsstGeneratorModule
     # A list of paths in the template directory which will not be expanded.
     $Exclude = @()
 
-    Expand-TemplateDirectory -InputPath $TemplateDir -OutputPath $OutputPath -Model $Model -Exclude $Excludes 
+    Expand-TemplateDirectory -InputPath $TemplateDir -OutputPath $OutputPath -Model $Model -Exclude $Excludes
  
 }

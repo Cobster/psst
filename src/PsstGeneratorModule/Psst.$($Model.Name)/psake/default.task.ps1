@@ -1,0 +1,1 @@
+Task default -depends 'build'

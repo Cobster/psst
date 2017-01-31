@@ -20,16 +20,6 @@ Describe "New-PsstGeneratorModule" {
         "$($ModulePath.FullName)" | Should Contain "\. \`$PSScriptRoot\\NewPsstGeneratorModule\.ps1"
     }
 
-    It "Should create a new folder prefixed with 'Psst.'" {
-        New-PsstGeneratorModule -Name "Example"
-        "$TestDirectory\Psst.Example" | Should Exist
-    }
-
-    It "Should create a new module data file" {
-        new-PsstGeneratorModule -Name "Example"
-        "$TestDirectory\Psst.Example\src\Psst.Example.psd1" | Should Exist
-    }
-
     It "Should set the module script as the Root Module" {
         New-PsstGeneratorModule -name "Example"
         $ModuleData = Import-PowerShellDataFile -Path "$TestDirectory\Psst.Example\src\Psst.Example.psd1"
@@ -42,10 +32,10 @@ Describe "New-PsstGeneratorModule" {
     #     $ModuleData.RequiredModules -contains 'Psst' | Should Be $true 
     # }
 
-    It "Should set the ModuleVersion to 1.0.0 by default" {
+    It "Should set the ModuleVersion to 0.0.0 by default" {
         New-PsstGeneratorModule -name "Example"
         $ModuleData = Import-PowerShellDataFile -Path "$TestDirectory\Psst.Example\src\Psst.Example.psd1"
-        $ModuleData.ModuleVersion | Should Be '1.0.0'
+        $ModuleData.ModuleVersion | Should Be '0.0.0'
     }
 
     It "Should set the ModuleVersion to the version specified at the command line" {
@@ -54,34 +44,38 @@ Describe "New-PsstGeneratorModule" {
         $ModuleData.ModuleVersion | Should Be '1.1.0'
     }
 
-    It "Should create a new module file" {
-        New-PsstGeneratorModule -Name "Example"
-        "$TestDirectory\Psst.Example\src\Psst.Example.psm1" | Should Exist
-    }
-
     It "Should define the `$ModuleData parameter in the module" {
         New-PsstGeneratorModule -name "Example"
         "$TestDirectory\Psst.Example\src\Psst.Example.psm1" | Should Contain "\`$ModuleData = Import\-PowerShellDataFile \`"\`$PSScriptRoot\\Psst\.Example\.psd1\`""
     }
 
-    It "Should create a new LICENSE file" {
-        New-PsstGeneratorModule -name "Example"
-        "$TestDirectory\Psst.Example\LICENSE" | Should Exist
-    }
-
-    It "Should create a 'README.md' file" {
+    It "Should create this directory structure" {
         New-PsstGeneratorModule -Name "Example"
-        "$TestDirectory\Psst.Example\README.md" | Should Exist
-    }
 
-    It "Should create a 'default.ps1' script file for psake" {
-        New-PsstGeneratorModule -Name "Example"
-        "$TestDirectory\Psst.Example\default.ps1" | Should Exist
+        @(
+            "$TestDirectory\Psst.Example\",
+            "$TestDirectory\Psst.Example\.gitignore",
+            "$TestDirectory\Psst.Example\build.ps1",
+            "$TestDirectory\Psst.Example\default.ps1",
+            "$TestDirectory\Psst.Example\LICENSE",
+            "$TestDirectory\Psst.Example\README.md",
+            "$TestDirectory\Psst.Example\psake\build-impl.task.ps1",
+            "$TestDirectory\Psst.Example\psake\build.task.ps1",
+            "$TestDirectory\Psst.Example\psake\clean.task.ps1",
+            "$TestDirectory\Psst.Example\psake\compress-templates.task.ps1",
+            "$TestDirectory\Psst.Example\psake\conditions.ps1",
+            "$TestDirectory\Psst.Example\psake\default.task.ps1",
+            "$TestDirectory\Psst.Example\psake\init.task.ps1",
+            "$TestDirectory\Psst.Example\psake\install.task.ps1",
+            "$TestDirectory\Psst.Example\psake\publish.task.ps1",
+            "$TestDirectory\Psst.Example\psake\settings.ps1",
+            "$TestDirectory\Psst.Example\psake\tasks.ps1",
+            "$TestDirectory\Psst.Example\psake\test.task.ps1",
+            "$TestDirectory\Psst.Example\psake\uninstall.task.ps1",
+            "$TestDirectory\Psst.Example\psake\update-module-manifest.task.ps1",
+            "$TestDirectory\Psst.Example\psake\zip-artifacts.task.ps1",
+            "$TestDirectory\Psst.Example\src\Psst.Example.psd1",
+            "$TestDirectory\Psst.Example\src\Psst.Example.psm1"
+        ) | Should Exist
     }
-
-    It "Should create a 'build.Tests.ps1' which defines tests that verify the project was scaffolded correctly" {
-        New-PsstGeneratorModule -Name "Example"
-        "$TestDirectory\Psst.Example\build.Tests.ps1" | Should Exist
-    }
-
 }

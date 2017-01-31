@@ -1,0 +1,15 @@
+Task 'show-api-key' -requiredVariables SettingsPath {
+    
+    if ($NuGetApiKey) {
+        "The embedded (partial) NuGetApiKey is: $($NuGetApiKey[0..7])"
+    }
+    elseif ($NuGetApiKey = GetSetting -Path $SettingsPath -Key NuGetApiKey) {
+        "The stored (partial) NuGetApiKey is: $($NuGetApiKey[0..7])"
+    }
+    else {
+        "The NuGetApiKey has not been provided or stored."
+        return
+    }
+
+    "To see the full key, use the task 'show-full-api-key'"
+}

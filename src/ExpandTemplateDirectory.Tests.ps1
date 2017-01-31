@@ -60,12 +60,12 @@ Describe "Expand-TemplateDirectory" {
             Message = "Should not see this"
         }
 
-        Expand-TemplateDirectory -InputPath "$TestDirectory\Templates" -Model $Model -Exclude "$TestDirectory\Templates\message.txt"
+        Expand-TemplateDirectory -InputPath "$TestDirectory\Templates" -Model $Model -Exclude "message.txt"
 
         "$TestDirectory\message.txt" | Should Not Exist
     }
 
-    It "Files in the subfolder and exlucded should not be expanded" {
+    It "Files in the subfolder and excluded should not be expanded" {
         New-Item "$TestDirectory\Templates" -ItemType Directory
         New-Item "$TestDirectory\Templates\Sub" -ItemType Directory
         Add-Content -Path "$TestDirectory\Templates\Sub\message.txt" -Value '$($Model.Message)' -Force
@@ -93,6 +93,22 @@ Describe "Expand-TemplateDirectory" {
 
         "$TestDirectory\message.txt" | Should Exist
         "$TestDirectory\message.txt" | Should Contain "Should see this"
+
+    }
+
+    It "Should url decode template file and directory names before expanding" {
+
+        New-Item "$TestDirectory\Templates" -ItemType Directory
+        New-Item "$TestDirectory\Templates\%24(%24Model.DirName)\%24(%24Model.FileName)" -ItemType File -Force
+
+        $Model = @{
+            DirName = "Bar"
+            FileName = "Woot.txt"
+        }
+
+        Expand-TemplateDirectory -InputPath "$TestDirectory\Templates" -Model $Model
+
+        "$TestDirectory\Bar\Woot.txt" | Should Exist
 
     }
 }
