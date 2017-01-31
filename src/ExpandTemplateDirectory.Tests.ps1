@@ -60,12 +60,12 @@ Describe "Expand-TemplateDirectory" {
             Message = "Should not see this"
         }
 
-        Expand-TemplateDirectory -InputPath "$TestDirectory\Templates" -Model $Model -Exclude "$TestDirectory\Templates\message.txt"
+        Expand-TemplateDirectory -InputPath "$TestDirectory\Templates" -Model $Model -Exclude "message.txt"
 
         "$TestDirectory\message.txt" | Should Not Exist
     }
 
-    It "Files in the subfolder and exlucded should not be expanded" {
+    It "Files in the subfolder and excluded should not be expanded" {
         New-Item "$TestDirectory\Templates" -ItemType Directory
         New-Item "$TestDirectory\Templates\Sub" -ItemType Directory
         Add-Content -Path "$TestDirectory\Templates\Sub\message.txt" -Value '$($Model.Message)' -Force

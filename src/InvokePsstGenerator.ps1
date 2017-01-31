@@ -34,7 +34,7 @@ function Invoke-PsstGenerator
 
     # A list of paths in the template directory which will not be expanded.
     $Excludes = @()
-    $Excludes += Join-Path $TemplateDir '$($Model.Name)\.exclude'
+    $Excludes += '$($Model.Name)\.exclude'
 
     Expand-TemplateDirectory -InputPath $TemplateDir -OutputPath $OutputPath -Model $Model -Exclude $Excludes 
 }

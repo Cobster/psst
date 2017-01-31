@@ -13,6 +13,7 @@ function Expand-TemplateDirectory
     # Check to see if the InputPath is a directory 
     if ($false -eq (Test-Path $InputPath -PathType Container)) {
 
+        # Look for the 
         $ModuleName = Get-Item $PSScriptRoot\*.psd1 | 
             Where-Object { $null -ne (Test-ModuleManifest -Path $_ -ErrorAction SilentlyContinue) } |
             Select-Object -First 1 -ExpandProperty BaseName 
@@ -36,6 +37,15 @@ function Expand-TemplateDirectory
         $InputPath = "$TargetPath\$TemplateName"
     }
 
+    # Root each path in the exclusion list to the template directories input path
+    $Exclude = $Exclude | ForEach-Object { 
+        if ([IO.Path]::IsPathRooted($_)) {
+            $_
+        } else {
+            "$InputPath\$_"
+        }
+    }
+    
     Write-Verbose "Expanding $InputPath to $OutputPath"
 
     $Exclude | ForEach-Object { Write-Verbose "Excluding: $_" }
